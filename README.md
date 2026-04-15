@@ -1,5 +1,13 @@
 # Dify IMO/NCSR Approval Agent
 
+> **Quick Access**
+>
+> The reusable Dify workflow DSL can be downloaded from the [`app/`](./app) folder:
+>
+> - [`app/approval-agent.yml`](./app/approval-agent.yml)
+>
+> The custom Excel plugin package can be found in the [`plugin/`](./plugin) folder.
+
 A Dify-based approval workflow for IMO/NCSR review scenarios, covering:
 
 - **SHIP REPORTING SYSTEMS**
