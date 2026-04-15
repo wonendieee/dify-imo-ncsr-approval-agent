@@ -94,16 +94,10 @@ These templates use **named ranges** so that the plugin can fill them reliably w
 ├─ plugin/
 │  ├─ generic_excel_template_filler/
 │  └─ generic_excel_template_filler.difypkg
-├─ templates/
-│  ├─ SHIP REPORTING SYSTEMS.xlsx
-│  ├─ PROPOSED SHIP ROUTEING SYSTEMS.xlsx
-│  └─ TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES.xlsx
 ├─ service/
 │  └─ minimal_upload_service.py
-├─ docs/
-│  ├─ installation.md
-│  ├─ workflow-overview.md
-│  ├─ plugin-design.md
+├─ knowledge_base/
+│  ├─ documents
 │  └─ knowledge-base-setup.md
 ├─ examples/
 │  ├─ sample_input.pdf
