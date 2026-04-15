@@ -363,9 +363,9 @@ workflow:
           label: mission
           max_length: 48
           options:
-          - 船舶报告系统
-          - 船舶定线制
-          - 分道通航制
+          - SHIP REPORTING SYSTEMS
+          - SHIP ROUTEING SYSTEMS
+          - TRAFFIC SEPARATION SCHEMES
           placeholder: ''
           required: true
           type: select
@@ -412,127 +412,18 @@ workflow:
         prompt_template:
         - id: 0c2bb321-40c5-4e7d-ae08-aaf4d3d8d89a
           role: system
-          text: "You are an \"IMO/NCSR Approval Conclusion Analyst\".\n\nYour task\
-            \ is NOT to reconstruct a source table.\nYour task is NOT to extract raw\
-            \ key information into table cells.\nYour task is NOT to output JSON.\n\
-            \nYour only task is:\nRead the source document, PDF page images, and knowledge\
-            \ retrieval results, then produce a decision-oriented review memo for\
-            \ a downstream approval-table node.\n\nThis is an approval-conclusion\
-            \ task.\nThe downstream table is a reviewer decision table, not a source-information\
-            \ table.\n\nEvidence priority:\n1. First priority: PDF page images and\
-            \ visually captured content.\n2. Second priority: extracted document text.\n\
-            3. Third priority: knowledge retrieval results.\n\nIf extracted text conflicts\
-            \ with page-image content, follow the page-image content.\nIf knowledge\
-            \ retrieval conflicts with the source document, follow the source document.\n\
-            \nCore decision semantics:\n- \"✓\" = the aspect is explicitly addressed\
-            \ in the proposal and appears clear, adequate, and free of review concern.\n\
-            - \"N/A\" = the aspect is not mentioned or not evidenced in the proposal.\n\
-            - \"Un\" = the aspect is mentioned, but there is a reviewer concern, ambiguity,\
-            \ insufficiency, inconsistency, or other problem that should be explained\
-            \ in footnote n.\n\nImportant interpretation rule:\n- Do NOT use bare\
-            \ \"U\".\n- Do NOT use \"✓n\".\n- Do NOT use \"-\".\n- Do NOT use empty\
-            \ string \"\".\n- If clearly addressed without issue, use \"✓\".\n- If\
-            \ not mentioned, use \"N/A\".\n- If mentioned but problematic or unclear,\
-            \ use \"Un\".\n\nMandatory discipline:\n1. You must think like a reviewer\
-            \ filling an approval conclusion table, not like an extractor copying\
-            \ source facts.\n2. Except for document/document_proponent and remarks,\
-            \ the final table cells must be marks only.\n3. Narrative content belongs\
-            \ only in footnotes, remarks, and reasoning sections of this memo.\n4.\
-            \ If an aspect is mentioned and has any review concern, ambiguity, insufficiency,\
-            \ inconsistency, or qualification, assign \"Un\" with a footnote.\n5.\
-            \ If an aspect is not mentioned, assign \"N/A\".\n6. If an aspect is clearly\
-            \ and adequately addressed without concern, assign \"✓\".\n7. Do not invent\
-            \ facts, marks, or footnotes not grounded in the evidence.\n8. Keep remarks\
-            \ separate from footnotes.\n9. If multiple aspects share the same reviewer\
-            \ concern, explicitly state that the same footnote number should be reused.\n\
-            10. Footnote numbering must follow first appearance in table-column order.\n\
-            \nYour output must be written in English only.\nDo not output JSON.\n\
-            Do not output Markdown code fences.\nDo not output freeform narrative\
-            \ without structure.\n\nYou must output using exactly these section headings:\n\
-            \nDocument Identification\nDecision Policy\nRow Decision Summary\nColumn\
-            \ Decisions\nFootnote Drafts\nRemarks Candidate\nCross-Column Consistency\
-            \ Checks\nStructured Extraction Hints\n\nSection requirements:\n\nDocument\
-            \ Identification\n- Identify the apparent proposal/document label, proponent/state,\
-            \ measure name, and table type if visible.\n\nDecision Policy\n- Briefly\
-            \ state that this is an approval-conclusion assessment.\n- State that\
-            \ non-document / non-remarks cells should be marks only in the downstream\
-            \ table.\n\nRow Decision Summary\nFor each visible/relevant row, write:\n\
-            Row Label:\nApparent Document/Proponent:\nApparent Remarks/Context:\n\
-            Overall Review Posture:\nGeneral Reliability of Decision:\n\nColumn Decisions\n\
-            - Assess every target table aspect one by one, in exactly the order supplied\
-            \ by the user.\n- For each aspect, use exactly this mini-format:\n\nAspect:\n\
-            Final Mark:\nJudgement Basis:\nFootnote Needed:\nFootnote Draft:\n\nRules\
-            \ for this mini-format:\n- \"Final Mark\" must be exactly one of:\n  -\
-            \ \"✓\"\n  - \"N/A\"\n  - \"U1\", \"U2\", \"U3\", ...\n- \"Judgement Basis\"\
-            \ must be short and decision-oriented.\n- \"Footnote Needed\" must be:\n\
-            \  - \"No\" for \"✓\" and \"N/A\"\n  - \"Yes\" for any \"Un\"\n- \"Footnote\
-            \ Draft\" must be:\n  - \"None.\" for \"✓\" and \"N/A\"\n  - one concise\
-            \ reviewer conclusion sentence for any \"Un\"\n- If an aspect is not mentioned,\
-            \ use \"N/A\", not \"Un\".\n- If an aspect is mentioned and problematic\
-            \ or unclear, use \"Un\", not \"N/A\".\n- If an aspect is clearly addressed\
-            \ and acceptable, use \"✓\".\n\nFootnote Drafts\n- List all distinct reviewer\
-            \ footnotes that should appear in the downstream table.\n- Number footnotes\
-            \ in the order of first appearance following the table aspect order supplied\
-            \ by the user.\n- If later aspects have the same concern, reuse the same\
-            \ footnote number.\n- Keep footnotes concise, formal, and table-ready.\n\
-            \nRemarks Candidate\n- Provide only the likely content for the rightmost\
-            \ Remarks column.\n- Do not place footnote text here.\n\nCross-Column\
-            \ Consistency Checks\n- Highlight important inconsistencies across columns.\n\
-            - Keep this section concise and review-oriented.\n\nStructured Extraction\
-            \ Hints\n- Provide short downstream hints:\n  - document/document_proponent\
-            \ text candidate\n  - remarks text candidate\n  - which aspects should\
-            \ be marks only\n  - which aspects should carry numbered U marks\n  -\
-            \ proposed footnote reuse if any\n\nImportant:\nThe downstream node will\
-            \ build the final JSON table from your memo.\nSo your memo must be conclusion-first,\
-            \ mark-first, and footnote-ready.\nJudgement cells are conclusion cells,\
-            \ not information cells.\nThey may contain only:\n✓ / N/A / U1 / U2 /\
-            \ U3 ..."
+          text: "You are an \"IMO/NCSR Approval Conclusion Analyst\".\n\nYour task is NOT to reconstruct a source table.\nYour task is NOT to extract raw key information into table cells.\nYour task is NOT to output JSON.\n\nYour only task is:\nRead the source document, PDF page images, and knowledge retrieval results, then produce a decision-oriented review memo for a downstream approval-table node.\n\nThis is an approval-conclusion task.\nThe downstream table is a reviewer decision table, not a source-information table.\n\nEvidence priority:\n1. First priority: PDF page images and visually captured content.\n2. Second priority: extracted document text.\n3. Third priority: knowledge retrieval results.\n\nIf extracted text conflicts with page-image content, follow the page-image content.\nIf knowledge retrieval conflicts with the source document, follow the source document.\n\nCore decision semantics:\n- \"✓\" = the aspect is explicitly addressed in the proposal and appears clear, adequate,\
+            \ and free of review concern.\n- \"N/A\" = the aspect is not mentioned or not evidenced in the proposal.\n- \"Un\" = the aspect is mentioned, but there is a reviewer concern, ambiguity, insufficiency, inconsistency, or other problem that should be explained in footnote n.\n\nImportant interpretation rule:\n- Do NOT use bare \"U\".\n- Do NOT use \"✓n\".\n- Do NOT use \"-\".\n- Do NOT use empty string \"\".\n- If clearly addressed without issue, use \"✓\".\n- If not mentioned, use \"N/A\".\n- If mentioned but problematic or unclear, use \"Un\".\n\nMandatory discipline:\n1. You must think like a reviewer filling an approval conclusion table, not like an extractor copying source facts.\n2. Except for document/document_proponent and remarks, the final table cells must be marks only.\n3. Narrative content belongs only in footnotes, remarks, and reasoning sections of this memo.\n4. If an aspect is mentioned and has any review concern, ambiguity, insufficiency, inconsistency, or qualification,\
+            \ assign \"Un\" with a footnote.\n5. If an aspect is not mentioned, assign \"N/A\".\n6. If an aspect is clearly and adequately addressed without concern, assign \"✓\".\n7. Do not invent facts, marks, or footnotes not grounded in the evidence.\n8. Keep remarks separate from footnotes.\n9. If multiple aspects share the same reviewer concern, explicitly state that the same footnote number should be reused.\n10. Footnote numbering must follow first appearance in table-column order.\n\nYour output must be written in English only.\nDo not output JSON.\nDo not output Markdown code fences.\nDo not output freeform narrative without structure.\n\nYou must output using exactly these section headings:\n\nDocument Identification\nDecision Policy\nRow Decision Summary\nColumn Decisions\nFootnote Drafts\nRemarks Candidate\nCross-Column Consistency Checks\nStructured Extraction Hints\n\nSection requirements:\n\nDocument Identification\n- Identify the apparent proposal/document label, proponent/state,\
+            \ measure name, and table type if visible.\n\nDecision Policy\n- Briefly state that this is an approval-conclusion assessment.\n- State that non-document / non-remarks cells should be marks only in the downstream table.\n\nRow Decision Summary\nFor each visible/relevant row, write:\nRow Label:\nApparent Document/Proponent:\nApparent Remarks/Context:\nOverall Review Posture:\nGeneral Reliability of Decision:\n\nColumn Decisions\n- Assess every target table aspect one by one, in exactly the order supplied by the user.\n- For each aspect, use exactly this mini-format:\n\nAspect:\nFinal Mark:\nJudgement Basis:\nFootnote Needed:\nFootnote Draft:\n\nRules for this mini-format:\n- \"Final Mark\" must be exactly one of:\n  - \"✓\"\n  - \"N/A\"\n  - \"U1\", \"U2\", \"U3\", ...\n- \"Judgement Basis\" must be short and decision-oriented.\n- \"Footnote Needed\" must be:\n  - \"No\" for \"✓\" and \"N/A\"\n  - \"Yes\" for any \"Un\"\n- \"Footnote Draft\" must be:\n  - \"None.\" for \"✓\" and\
+            \ \"N/A\"\n  - one concise reviewer conclusion sentence for any \"Un\"\n- If an aspect is not mentioned, use \"N/A\", not \"Un\".\n- If an aspect is mentioned and problematic or unclear, use \"Un\", not \"N/A\".\n- If an aspect is clearly addressed and acceptable, use \"✓\".\n\nFootnote Drafts\n- List all distinct reviewer footnotes that should appear in the downstream table.\n- Number footnotes in the order of first appearance following the table aspect order supplied by the user.\n- If later aspects have the same concern, reuse the same footnote number.\n- Keep footnotes concise, formal, and table-ready.\n\nRemarks Candidate\n- Provide only the likely content for the rightmost Remarks column.\n- Do not place footnote text here.\n\nCross-Column Consistency Checks\n- Highlight important inconsistencies across columns.\n- Keep this section concise and review-oriented.\n\nStructured Extraction Hints\n- Provide short downstream hints:\n  - document/document_proponent text candidate\n\
+            \  - remarks text candidate\n  - which aspects should be marks only\n  - which aspects should carry numbered U marks\n  - proposed footnote reuse if any\n\nImportant:\nThe downstream node will build the final JSON table from your memo.\nSo your memo must be conclusion-first, mark-first, and footnote-ready.\nJudgement cells are conclusion cells, not information cells.\nThey may contain only:\n✓ / N/A / U1 / U2 / U3 ..."
         - id: bc9cf8e9-8201-4c25-9020-6430fb73f4b0
           role: user
-          text: "Current target table type:\nSHIP REPORTING SYSTEMS\n\nProduce a structured\
-            \ English review memo for this table type.\n\nYou must assess the row(s)\
-            \ against these table aspects in exactly this order:\n\n1. document\n\
-            2. objectives\n3. demonstrated_need\n4. categories_of_ships\n5. traffic_characteristics_environment_aspects\n\
-            6. geographical_coverage\n7. appropriate_chartlet\n8. content_essential_for_achieving_objectives\n\
-            9. report_timing\n10. information_to_be_provided_to_ships_procedures\n\
-            11. communication_requirements\n12. rules_and_regulations_in_force\n13.\
-            \ shore_based_facilities\n14. existing_measures_why_inadequate\n15. backup_procedures\n\
-            16. emergency_plan\n17. measures_for_non_compliance\n18. implementation_date\n\
-            19. correct_reporting_format\n20. reference_to_relevant_data_exchange_standard\n\
-            21. cyber_risk_management_guidelines\n22. automated_ship_reporting_by_electronic_means\n\
-            23. adherence_to_res_a851_20\n24. draft_text_for_resolution\n25. adherence_to_other_applicable_guidelines\n\
-            26. remarks\n\nWhen writing the \"Column Decisions\" section, use the\
-            \ exact aspect names above.\n\nPay particular attention to:\n- whether\
-            \ the objective is clearly aligned with the reporting content;\n- whether\
-            \ the categories of ships are properly specified;\n- whether reporting\
-            \ timing and reporting content are adequately supported;\n- whether communication,\
-            \ shore-based facilities, and backup arrangements are clear;\n- whether\
-            \ existing measures are explained and shown to be inadequate;\n- whether\
-            \ emergency and non-compliance arrangements are adequately addressed;\n\
-            - whether the implementation date, reporting format, and data-exchange\
-            \ standard are clearly supported;\n- whether cyber-risk and automated\
-            \ reporting issues are addressed;\n- whether draft resolution text and\
-            \ guideline adherence are visible or clearly missing.\n\nAdditional mandatory\
-            \ rules for this node:\n1. This is an approval-conclusion table.\n2. Except\
-            \ for document and remarks, every downstream table cell must be a mark\
-            \ only.\n3. The only allowed final marks are:\n   ✓\n   N/A\n   U1, U2,\
-            \ U3, ...\n4. Use \"✓\" only when the aspect is explicitly addressed and\
-            \ clearly acceptable without review concern.\n5. Use \"N/A\" when the\
-            \ aspect is not mentioned.\n6. Use \"U1\", \"U2\", \"U3\", ... when the\
-            \ aspect is mentioned but unclear, insufficient, inconsistent, unsupported,\
-            \ or otherwise problematic.\n7. Do not use bare \"U\".\n8. Do not use\
-            \ \"✓1\".\n9. Do not use \"-\".\n10. Do not use empty string \"\".\n11.\
-            \ Every \"Un\" must have a footnote draft.\n12. Footnote numbers must\
-            \ increase in the order of first appearance following the table aspect\
-            \ order.\n13. If the same reviewer concern applies to multiple aspects,\
-            \ reuse the same footnote number.\n14. Footnote Draft must be a concise\
-            \ reviewer conclusion sentence suitable for placement below the table.\n\
-            15. Do not place descriptive summaries into future table cells.\n\nIf\
-            \ the subtitle is not visible, do not force one.\nIf remarks are visible,\
-            \ keep them only in the \"Remarks Candidate\" section and in the row-level\
-            \ review context.\n\nInput context:\n\n[Extracted document text]\n{{#1774943864283.text#}}\n\
-            \n[PDF page images or page-image-derived content]\n{{#1775705579726.files#}}\n\
-            \n[Knowledge retrieval result]\n{{#context#}}"
+          text: "Current target table type:\nSHIP REPORTING SYSTEMS\n\nProduce a structured English review memo for this table type.\n\nYou must assess the row(s) against these table aspects in exactly this order:\n\n1. document\n2. objectives\n3. demonstrated_need\n4. categories_of_ships\n5. traffic_characteristics_environment_aspects\n6. geographical_coverage\n7. appropriate_chartlet\n8. content_essential_for_achieving_objectives\n9. report_timing\n10. information_to_be_provided_to_ships_procedures\n11. communication_requirements\n12. rules_and_regulations_in_force\n13. shore_based_facilities\n14. existing_measures_why_inadequate\n15. backup_procedures\n16. emergency_plan\n17. measures_for_non_compliance\n18. implementation_date\n19. correct_reporting_format\n20. reference_to_relevant_data_exchange_standard\n21. cyber_risk_management_guidelines\n22. automated_ship_reporting_by_electronic_means\n23. adherence_to_res_a851_20\n24. draft_text_for_resolution\n25. adherence_to_other_applicable_guidelines\n\
+            26. remarks\n\nWhen writing the \"Column Decisions\" section, use the exact aspect names above.\n\nPay particular attention to:\n- whether the objective is clearly aligned with the reporting content;\n- whether the categories of ships are properly specified;\n- whether reporting timing and reporting content are adequately supported;\n- whether communication, shore-based facilities, and backup arrangements are clear;\n- whether existing measures are explained and shown to be inadequate;\n- whether emergency and non-compliance arrangements are adequately addressed;\n- whether the implementation date, reporting format, and data-exchange standard are clearly supported;\n- whether cyber-risk and automated reporting issues are addressed;\n- whether draft resolution text and guideline adherence are visible or clearly missing.\n\nAdditional mandatory rules for this node:\n1. This is an approval-conclusion table.\n2. Except for document and remarks, every downstream table cell must be\
+            \ a mark only.\n3. The only allowed final marks are:\n   ✓\n   N/A\n   U1, U2, U3, ...\n4. Use \"✓\" only when the aspect is explicitly addressed and clearly acceptable without review concern.\n5. Use \"N/A\" when the aspect is not mentioned.\n6. Use \"U1\", \"U2\", \"U3\", ... when the aspect is mentioned but unclear, insufficient, inconsistent, unsupported, or otherwise problematic.\n7. Do not use bare \"U\".\n8. Do not use \"✓1\".\n9. Do not use \"-\".\n10. Do not use empty string \"\".\n11. Every \"Un\" must have a footnote draft.\n12. Footnote numbers must increase in the order of first appearance following the table aspect order.\n13. If the same reviewer concern applies to multiple aspects, reuse the same footnote number.\n14. Footnote Draft must be a concise reviewer conclusion sentence suitable for placement below the table.\n15. Do not place descriptive summaries into future table cells.\n\nIf the subtitle is not visible, do not force one.\nIf remarks are visible, keep\
+            \ them only in the \"Remarks Candidate\" section and in the row-level review context.\n\nInput context:\n\n[Extracted document text]\n{{#1774943864283.text#}}\n\n[PDF page images or page-image-derived content]\n{{#1775705579726.files#}}\n\n[Knowledge retrieval result]\n{{#context#}}"
         selected: false
         structured_output:
           schema:
@@ -710,11 +601,7 @@ workflow:
 
             Your only task:
 
-            Read the extracted proposal text and output pure-text English retrieval
-            keywords and short search phrases that maximize the chance of hitting
-            the governing or directly relevant IMO resolution(s), circular(s), regulation
-            text, guidance documents, and previously adopted ship reporting system
-            documents in the downstream knowledge base.
+            Read the extracted proposal text and output pure-text English retrieval keywords and short search phrases that maximize the chance of hitting the governing or directly relevant IMO resolution(s), circular(s), regulation text, guidance documents, and previously adopted ship reporting system documents in the downstream knowledge base.
 
 
             This is NOT a summary task.
@@ -731,8 +618,7 @@ workflow:
 
             Main objective:
 
-            Output the most retrieval-effective pure-text search anchors for a ship
-            reporting system proposal or amendment.
+            Output the most retrieval-effective pure-text search anchors for a ship reporting system proposal or amendment.
 
 
             Priority orientation:
@@ -764,13 +650,11 @@ workflow:
 
             1. Exact official references explicitly cited in the source text
 
-            2. Official title fragments likely to appear in IMO resolutions, circulars,
-            annex headings, and draft resolution headings
+            2. Official title fragments likely to appear in IMO resolutions, circulars, annex headings, and draft resolution headings
 
             3. Canonical IMO normative terms used in ship reporting system instruments
 
-            4. Proposal-specific names or local details only if they help identify
-            a specific adopted reporting system
+            4. Proposal-specific names or local details only if they help identify a specific adopted reporting system
 
 
             You should strongly prefer:
@@ -844,23 +728,18 @@ workflow:
 
             11. Preserve official document numbers exactly when present.
 
-            12. Do not let local place names, communication channels, or operational
-            details dominate the output unless they are essential for identifying
-            a specific adopted reporting system.
+            12. Do not let local place names, communication channels, or operational details dominate the output unless they are essential for identifying a specific adopted reporting system.
 
-            13. Do not output narrative issue statements such as missing justification
-            or unclear implementation arrangements.
+            13. Do not output narrative issue statements such as missing justification or unclear implementation arrangements.
 
 
             Recommended content mix:
 
             - first 5 to 10 lines: exact official references and official title fragments
 
-            - next 10 to 20 lines: canonical normative terms and short family-match
-            queries
+            - next 10 to 20 lines: canonical normative terms and short family-match queries
 
-            - last 5 to 10 lines: proposal-specific bridge terms only if useful for
-            disambiguation
+            - last 5 to 10 lines: proposal-specific bridge terms only if useful for disambiguation
 
 
             Input:
@@ -1045,8 +924,7 @@ workflow:
 
             Your only task is:
 
-            Convert the approval-conclusion memo produced by the upstream review node
-            into one strict, valid, directly parseable JSON object.
+            Convert the approval-conclusion memo produced by the upstream review node into one strict, valid, directly parseable JSON object.
 
 
             This node is a pure structuring node.
@@ -1080,8 +958,7 @@ workflow:
 
             2. Do not output anything other than JSON.
 
-            3. Do not output Markdown, code fences, explanations, comments, introductions,
-            or summaries.
+            3. Do not output Markdown, code fences, explanations, comments, introductions, or summaries.
 
             4. All field names must use double quotes.
 
@@ -1089,16 +966,13 @@ workflow:
 
             6. Do not use trailing commas.
 
-            7. Do not invent facts, marks, footnotes, remarks, titles, subtitles,
-            or row values.
+            7. Do not invent facts, marks, footnotes, remarks, titles, subtitles, or row values.
 
-            8. If the approval-conclusion memo does not provide a value for a text
-            field, use "".
+            8. If the approval-conclusion memo does not provide a value for a text field, use "".
 
             9. Preserve the exact final mark stated in the memo whenever possible.
 
-            10. Preserve footnote numbering exactly as stated in the memo whenever
-            possible.
+            10. Preserve footnote numbering exactly as stated in the memo whenever possible.
 
 
             Critical structuring rule:
@@ -1152,8 +1026,7 @@ workflow:
 
             - "N/A" = not mentioned
 
-            - "Un" = mentioned, but unclear, insufficient, inconsistent, unsupported,
-            or otherwise problematic, with reviewer footnote n
+            - "Un" = mentioned, but unclear, insufficient, inconsistent, unsupported, or otherwise problematic, with reviewer footnote n
 
 
             Footnote rules:
@@ -1164,13 +1037,11 @@ workflow:
 
             3. Do not rewrite footnotes into evidence summaries.
 
-            4. If the memo clearly says that multiple aspects reuse the same footnote,
-            preserve that reuse.
+            4. If the memo clearly says that multiple aspects reuse the same footnote, preserve that reuse.
 
             5. Remove any footnote not referenced by a "Un" mark.
 
-            6. Keep footnote numbering exactly as already determined by the upstream
-            memo.
+            6. Keep footnote numbering exactly as already determined by the upstream memo.
 
             7. Do not renumber unless the upstream memo is internally inconsistent.
 
@@ -1179,8 +1050,7 @@ workflow:
 
             - document / document_proponent: short row label only
 
-            - remarks: only the final Remarks-column content or concise row context
-            stated in the memo
+            - remarks: only the final Remarks-column content or concise row context stated in the memo
 
             - do not place footnote text into remarks
 
@@ -1195,8 +1065,7 @@ workflow:
 
             3. Do not merge rows.
 
-            4. Do not split one row into multiple rows unless the upstream memo explicitly
-            indicates multiple rows.
+            4. Do not split one row into multiple rows unless the upstream memo explicitly indicates multiple rows.
 
 
             Missing-information rule:
@@ -1205,8 +1074,7 @@ workflow:
 
             - For judgment fields: do not invent a mark.
 
-            - If the memo is incomplete for a judgment field, copy the most conservative
-            explicit value from the memo only.
+            - If the memo is incomplete for a judgment field, copy the most conservative explicit value from the memo only.
 
             - Do not infer from outside evidence.
 
@@ -1215,62 +1083,18 @@ workflow:
 
             - Follow the exact fixed structure requested by the user prompt.
 
-            - If the user prompt allows blank subtitle and the memo does not clearly
-            provide one, output "".
+            - If the user prompt allows blank subtitle and the memo does not clearly provide one, output "".
 
 
             This node must be conservative:
 
-            If the memo is incomplete, preserve that incompleteness in the JSON rather
-            than making a new judgment.'
+            If the memo is incomplete, preserve that incompleteness in the JSON rather than making a new judgment.'
         - id: 1e2e17e1-f0bb-482c-9294-6a5c060cbba8
           role: user
-          text: "Current target table type:\nSHIP REPORTING SYSTEMS\n\nYou must output\
-            \ JSON with exactly the following structure.\nDo not add fields.\nDo not\
-            \ remove fields.\nDo not rename fields.\n\n{\n  \"table_type\": \"ship_reporting_systems\"\
-            ,\n  \"title\": \"ANNEX\",\n  \"subtitle\": \"SHIP REPORTING SYSTEMS\"\
-            ,\n  \"column_order\": [\n    \"document\",\n    \"objectives\",\n   \
-            \ \"demonstrated_need\",\n    \"categories_of_ships\",\n    \"traffic_characteristics_environment_aspects\"\
-            ,\n    \"geographical_coverage\",\n    \"appropriate_chartlet\",\n   \
-            \ \"content_essential_for_achieving_objectives\",\n    \"report_timing\"\
-            ,\n    \"information_to_be_provided_to_ships_procedures\",\n    \"communication_requirements\"\
-            ,\n    \"rules_and_regulations_in_force\",\n    \"shore_based_facilities\"\
-            ,\n    \"existing_measures_why_inadequate\",\n    \"backup_procedures\"\
-            ,\n    \"emergency_plan\",\n    \"measures_for_non_compliance\",\n   \
-            \ \"implementation_date\",\n    \"correct_reporting_format\",\n    \"\
-            reference_to_relevant_data_exchange_standard\",\n    \"cyber_risk_management_guidelines\"\
-            ,\n    \"automated_ship_reporting_by_electronic_means\",\n    \"adherence_to_res_a851_20\"\
-            ,\n    \"draft_text_for_resolution\",\n    \"adherence_to_other_applicable_guidelines\"\
-            ,\n    \"remarks\"\n  ],\n  \"rows\": [\n    {\n      \"document\": \"\
-            \",\n      \"objectives\": \"\",\n      \"demonstrated_need\": \"\",\n\
-            \      \"categories_of_ships\": \"\",\n      \"traffic_characteristics_environment_aspects\"\
-            : \"\",\n      \"geographical_coverage\": \"\",\n      \"appropriate_chartlet\"\
-            : \"\",\n      \"content_essential_for_achieving_objectives\": \"\",\n\
-            \      \"report_timing\": \"\",\n      \"information_to_be_provided_to_ships_procedures\"\
-            : \"\",\n      \"communication_requirements\": \"\",\n      \"rules_and_regulations_in_force\"\
-            : \"\",\n      \"shore_based_facilities\": \"\",\n      \"existing_measures_why_inadequate\"\
-            : \"\",\n      \"backup_procedures\": \"\",\n      \"emergency_plan\"\
-            : \"\",\n      \"measures_for_non_compliance\": \"\",\n      \"implementation_date\"\
-            : \"\",\n      \"correct_reporting_format\": \"\",\n      \"reference_to_relevant_data_exchange_standard\"\
-            : \"\",\n      \"cyber_risk_management_guidelines\": \"\",\n      \"automated_ship_reporting_by_electronic_means\"\
-            : \"\",\n      \"adherence_to_res_a851_20\": \"\",\n      \"draft_text_for_resolution\"\
-            : \"\",\n      \"adherence_to_other_applicable_guidelines\": \"\",\n \
-            \     \"remarks\": \"\"\n    }\n  ],\n  \"footnotes\": [\n    {\n    \
-            \  \"id\": \"\",\n      \"text\": \"\"\n    }\n  ]\n}\n\nAdditional mandatory\
-            \ rules:\n1. This is a pure structuring step.\n2. Use only the approval-conclusion\
-            \ memo as the source of truth.\n3. Do not make any new judgment.\n4. Except\
-            \ for \"document\" and \"remarks\", every row field must contain marks\
-            \ only.\n5. The only allowed judgment-cell values are:\n   \"✓\"\n   \"\
-            N/A\"\n   \"U1\", \"U2\", \"U3\", ...\n6. Never place factual summaries,\
-            \ evidence, or reasoning text into judgment cells.\n7. If a \"Un\" mark\
-            \ appears in a row cell, there must be one corresponding footnote with\
-            \ id \"n\".\n8. Preserve footnote reuse exactly as indicated by the memo.\n\
-            9. Footnotes must contain concise reviewer conclusion text only.\n10.\
-            \ remarks must contain only the final Remarks-column content, never footnotes.\n\
-            11. If the memo does not clearly provide subtitle text beyond the fixed\
-            \ title logic, keep:\n   \"subtitle\": \"SHIP REPORTING SYSTEMS\"\n12.\
-            \ Preserve every row identified in the memo.\n\nInput context:\n\n[Analysis\
-            \ result]\n{{#context#}}"
+          text: "Current target table type:\nSHIP REPORTING SYSTEMS\n\nYou must output JSON with exactly the following structure.\nDo not add fields.\nDo not remove fields.\nDo not rename fields.\n\n{\n  \"table_type\": \"ship_reporting_systems\",\n  \"title\": \"ANNEX\",\n  \"subtitle\": \"SHIP REPORTING SYSTEMS\",\n  \"column_order\": [\n    \"document\",\n    \"objectives\",\n    \"demonstrated_need\",\n    \"categories_of_ships\",\n    \"traffic_characteristics_environment_aspects\",\n    \"geographical_coverage\",\n    \"appropriate_chartlet\",\n    \"content_essential_for_achieving_objectives\",\n    \"report_timing\",\n    \"information_to_be_provided_to_ships_procedures\",\n    \"communication_requirements\",\n    \"rules_and_regulations_in_force\",\n    \"shore_based_facilities\",\n    \"existing_measures_why_inadequate\",\n    \"backup_procedures\",\n    \"emergency_plan\",\n    \"measures_for_non_compliance\",\n    \"implementation_date\",\n    \"correct_reporting_format\",\n\
+            \    \"reference_to_relevant_data_exchange_standard\",\n    \"cyber_risk_management_guidelines\",\n    \"automated_ship_reporting_by_electronic_means\",\n    \"adherence_to_res_a851_20\",\n    \"draft_text_for_resolution\",\n    \"adherence_to_other_applicable_guidelines\",\n    \"remarks\"\n  ],\n  \"rows\": [\n    {\n      \"document\": \"\",\n      \"objectives\": \"\",\n      \"demonstrated_need\": \"\",\n      \"categories_of_ships\": \"\",\n      \"traffic_characteristics_environment_aspects\": \"\",\n      \"geographical_coverage\": \"\",\n      \"appropriate_chartlet\": \"\",\n      \"content_essential_for_achieving_objectives\": \"\",\n      \"report_timing\": \"\",\n      \"information_to_be_provided_to_ships_procedures\": \"\",\n      \"communication_requirements\": \"\",\n      \"rules_and_regulations_in_force\": \"\",\n      \"shore_based_facilities\": \"\",\n      \"existing_measures_why_inadequate\": \"\",\n      \"backup_procedures\": \"\",\n      \"emergency_plan\"\
+            : \"\",\n      \"measures_for_non_compliance\": \"\",\n      \"implementation_date\": \"\",\n      \"correct_reporting_format\": \"\",\n      \"reference_to_relevant_data_exchange_standard\": \"\",\n      \"cyber_risk_management_guidelines\": \"\",\n      \"automated_ship_reporting_by_electronic_means\": \"\",\n      \"adherence_to_res_a851_20\": \"\",\n      \"draft_text_for_resolution\": \"\",\n      \"adherence_to_other_applicable_guidelines\": \"\",\n      \"remarks\": \"\"\n    }\n  ],\n  \"footnotes\": [\n    {\n      \"id\": \"\",\n      \"text\": \"\"\n    }\n  ]\n}\n\nAdditional mandatory rules:\n1. This is a pure structuring step.\n2. Use only the approval-conclusion memo as the source of truth.\n3. Do not make any new judgment.\n4. Except for \"document\" and \"remarks\", every row field must contain marks only.\n5. The only allowed judgment-cell values are:\n   \"✓\"\n   \"N/A\"\n   \"U1\", \"U2\", \"U3\", ...\n6. Never place factual summaries, evidence, or reasoning\
+            \ text into judgment cells.\n7. If a \"Un\" mark appears in a row cell, there must be one corresponding footnote with id \"n\".\n8. Preserve footnote reuse exactly as indicated by the memo.\n9. Footnotes must contain concise reviewer conclusion text only.\n10. remarks must contain only the final Remarks-column content, never footnotes.\n11. If the memo does not clearly provide subtitle text beyond the fixed title logic, keep:\n   \"subtitle\": \"SHIP REPORTING SYSTEMS\"\n12. Preserve every row identified in the memo.\n\nInput context:\n\n[Analysis result]\n{{#context#}}"
         selected: false
         structured_output:
           schema:
@@ -1463,66 +1287,11 @@ workflow:
       type: custom
       width: 242
     - data:
-        code: "import json\nimport re\nfrom typing import Any, Dict, List\n\n\nALLOWED_MARK_RE\
-          \ = re.compile(r\"^(✓|N/A|U[1-9]\\d*)$\")\n\n\ndef parse_input(data: Any)\
-          \ -> Dict[str, Any]:\n    if isinstance(data, dict):\n        return data\n\
-          \    if isinstance(data, str):\n        data = data.strip()\n        if\
-          \ not data:\n            return {}\n        return json.loads(data)\n  \
-          \  raise ValueError(\"structured_json must be a JSON string or dict\")\n\
-          \n\ndef s(value: Any) -> str:\n    return \"\" if value is None else str(value).strip()\n\
-          \n\ndef normalize_text(value: Any) -> str:\n    text = s(value)\n    return\
-          \ text\n\n\ndef normalize_mark(value: Any, field_name: str) -> Any:\n  \
-          \  text = s(value)\n\n    if text == \"√\":\n        text = \"✓\"\n\n  \
-          \  if not text:\n        raise ValueError(f\"Judgement cell '{field_name}'\
-          \ is empty. Allowed values: ✓ / N/A / U1, U2, ...\")\n\n    if not ALLOWED_MARK_RE.match(text):\n\
-          \        raise ValueError(\n            f\"Invalid judgement mark in '{field_name}':\
-          \ {text}. \"\n            \"Allowed values: ✓ / N/A / U1, U2, ...\"\n  \
-          \      )\n\n    m = re.match(r\"^U([1-9]\\d*)$\", text)\n    if m:\n   \
-          \     return {\n            \"symbol\": \"U\",\n            \"footnote_ref\"\
-          : m.group(1),\n            \"display\": text\n        }\n\n    return text\n\
-          \n\ndef clean_issue_text(text: Any) -> str:\n    return s(text)\n\n\ndef\
-          \ extract_issues(data: Dict[str, Any]) -> List[str]:\n    issues: List[str]\
-          \ = []\n    used_ids = set()\n\n    for item in data.get(\"footnotes\",\
-          \ []) or []:\n        if not isinstance(item, dict):\n            continue\n\
-          \        fid = s(item.get(\"id\"))\n        txt = clean_issue_text(item.get(\"\
-          text\"))\n        if not fid or not txt:\n            continue\n       \
-          \ if fid in used_ids:\n            continue\n        used_ids.add(fid)\n\
-          \        issues.append(txt)\n\n    return issues\n\n\ndef main(structured_json:\
-          \ Any) -> Dict[str, Any]:\n    data = parse_input(structured_json)\n   \
-          \ rows = data.get(\"rows\", []) or []\n    row = rows[0] if rows else {}\n\
-          \n    field_map = {\n        \"objectives\": \"objectives_cell\",\n    \
-          \    \"demonstrated_need\": \"demonstrated_need_cell\",\n        \"categories_of_ships\"\
-          : \"categories_of_ships_cell\",\n        \"traffic_characteristics_environment_aspects\"\
-          : \"traffic_characteristics_cell\",\n        \"geographical_coverage\":\
-          \ \"geographical_coverage_cell\",\n        \"appropriate_chartlet\": \"\
-          appropriate_chartlet_cell\",\n        \"content_essential_for_achieving_objectives\"\
-          : \"content_essential_cell\",\n        \"report_timing\": \"report_timing_cell\"\
-          ,\n        \"information_to_be_provided_to_ships_procedures\": \"information_to_be_provided_cell\"\
-          ,\n        \"communication_requirements\": \"communication_requirements_cell\"\
-          ,\n        \"rules_and_regulations_in_force\": \"rules_and_regulations_cell\"\
-          ,\n        \"shore_based_facilities\": \"shore_based_facilities_cell\",\n\
-          \        \"existing_measures_why_inadequate\": \"existing_measures_cell\"\
-          ,\n        \"backup_procedures\": \"backup_procedures_cell\",\n        \"\
-          emergency_plan\": \"emergency_plan_cell\",\n        \"measures_for_non_compliance\"\
-          : \"non_compliance_cell\",\n        \"implementation_date\": \"implementation_date_cell\"\
-          ,\n        \"correct_reporting_format\": \"correct_reporting_format_cell\"\
-          ,\n        \"reference_to_relevant_data_exchange_standard\": \"data_exchange_standard_cell\"\
-          ,\n        \"cyber_risk_management_guidelines\": \"cyber_risk_cell\",\n\
-          \        \"automated_ship_reporting_by_electronic_means\": \"automated_reporting_cell\"\
-          ,\n        \"adherence_to_res_a851_20\": \"res_a851_20_cell\",\n       \
-          \ \"draft_text_for_resolution\": \"draft_text_cell\",\n        \"adherence_to_other_applicable_guidelines\"\
-          : \"other_guidelines_cell\"\n    }\n\n    named_cells = {\n        \"title_cell\"\
-          : normalize_text(data.get(\"title\")),\n        \"subtitle_cell\": normalize_text(data.get(\"\
-          subtitle\")),\n        \"document_label_cell\": normalize_text(row.get(\"\
-          document\")),\n        \"context_description_cell\": normalize_text(row.get(\"\
-          remarks\"))\n    }\n\n    for src_key, target_name in field_map.items():\n\
-          \        named_cells[target_name] = normalize_mark(row.get(src_key), src_key)\n\
-          \n    payload = {\n        \"named_cells\": named_cells,\n        \"issues\"\
-          : extract_issues(data),\n        \"output_filename\": \"ship_reporting_systems_result\"\
-          \n    }\n\n    return {\n        \"payload_json\": json.dumps(payload, ensure_ascii=False),\n\
-          \        \"builtin_template_key\": \"ship_reporting_systems\",\n       \
-          \ \"document_label\": normalize_text(row.get(\"document\")),\n        \"\
-          issue_count\": len(payload[\"issues\"])\n    }"
+        code: "import json\nimport re\nfrom typing import Any, Dict, List\n\n\nALLOWED_MARK_RE = re.compile(r\"^(✓|N/A|U[1-9]\\d*)$\")\n\n\ndef parse_input(data: Any) -> Dict[str, Any]:\n    if isinstance(data, dict):\n        return data\n    if isinstance(data, str):\n        data = data.strip()\n        if not data:\n            return {}\n        return json.loads(data)\n    raise ValueError(\"structured_json must be a JSON string or dict\")\n\n\ndef s(value: Any) -> str:\n    return \"\" if value is None else str(value).strip()\n\n\ndef normalize_text(value: Any) -> str:\n    text = s(value)\n    return text\n\n\ndef normalize_mark(value: Any, field_name: str) -> Any:\n    text = s(value)\n\n    if text == \"√\":\n        text = \"✓\"\n\n    if not text:\n        raise ValueError(f\"Judgement cell '{field_name}' is empty. Allowed values: ✓ / N/A / U1, U2, ...\")\n\n    if not ALLOWED_MARK_RE.match(text):\n        raise ValueError(\n            f\"Invalid judgement mark in '{field_name}':\
+          \ {text}. \"\n            \"Allowed values: ✓ / N/A / U1, U2, ...\"\n        )\n\n    m = re.match(r\"^U([1-9]\\d*)$\", text)\n    if m:\n        return {\n            \"symbol\": \"U\",\n            \"footnote_ref\": m.group(1),\n            \"display\": text\n        }\n\n    return text\n\n\ndef clean_issue_text(text: Any) -> str:\n    return s(text)\n\n\ndef extract_issues(data: Dict[str, Any]) -> List[str]:\n    issues: List[str] = []\n    used_ids = set()\n\n    for item in data.get(\"footnotes\", []) or []:\n        if not isinstance(item, dict):\n            continue\n        fid = s(item.get(\"id\"))\n        txt = clean_issue_text(item.get(\"text\"))\n        if not fid or not txt:\n            continue\n        if fid in used_ids:\n            continue\n        used_ids.add(fid)\n        issues.append(txt)\n\n    return issues\n\n\ndef main(structured_json: Any) -> Dict[str, Any]:\n    data = parse_input(structured_json)\n    rows = data.get(\"rows\", []) or []\n   \
+          \ row = rows[0] if rows else {}\n\n    field_map = {\n        \"objectives\": \"objectives_cell\",\n        \"demonstrated_need\": \"demonstrated_need_cell\",\n        \"categories_of_ships\": \"categories_of_ships_cell\",\n        \"traffic_characteristics_environment_aspects\": \"traffic_characteristics_cell\",\n        \"geographical_coverage\": \"geographical_coverage_cell\",\n        \"appropriate_chartlet\": \"appropriate_chartlet_cell\",\n        \"content_essential_for_achieving_objectives\": \"content_essential_cell\",\n        \"report_timing\": \"report_timing_cell\",\n        \"information_to_be_provided_to_ships_procedures\": \"information_to_be_provided_cell\",\n        \"communication_requirements\": \"communication_requirements_cell\",\n        \"rules_and_regulations_in_force\": \"rules_and_regulations_cell\",\n        \"shore_based_facilities\": \"shore_based_facilities_cell\",\n        \"existing_measures_why_inadequate\": \"existing_measures_cell\",\n      \
+          \  \"backup_procedures\": \"backup_procedures_cell\",\n        \"emergency_plan\": \"emergency_plan_cell\",\n        \"measures_for_non_compliance\": \"non_compliance_cell\",\n        \"implementation_date\": \"implementation_date_cell\",\n        \"correct_reporting_format\": \"correct_reporting_format_cell\",\n        \"reference_to_relevant_data_exchange_standard\": \"data_exchange_standard_cell\",\n        \"cyber_risk_management_guidelines\": \"cyber_risk_cell\",\n        \"automated_ship_reporting_by_electronic_means\": \"automated_reporting_cell\",\n        \"adherence_to_res_a851_20\": \"res_a851_20_cell\",\n        \"draft_text_for_resolution\": \"draft_text_cell\",\n        \"adherence_to_other_applicable_guidelines\": \"other_guidelines_cell\"\n    }\n\n    named_cells = {\n        \"document_label_cell\": normalize_text(row.get(\"document\")),\n        \"context_description_cell\": normalize_text(row.get(\"remarks\"))\n    }\n\n    for src_key, target_name in field_map.items():\n\
+          \        named_cells[target_name] = normalize_mark(row.get(src_key), src_key)\n\n    payload = {\n        \"named_cells\": named_cells,\n        \"issues\": extract_issues(data),\n        \"output_filename\": \"ship_reporting_systems_result\"\n    }\n\n    return {\n        \"payload_json\": json.dumps(payload, ensure_ascii=False),\n        \"builtin_template_key\": \"ship_reporting_systems\",\n        \"document_label\": normalize_text(row.get(\"document\")),\n        \"issue_count\": len(payload[\"issues\"])\n    }"
         code_language: python3
         outputs:
           builtin_template_key:
@@ -1588,131 +1357,18 @@ workflow:
         prompt_template:
         - id: 0c2bb321-40c5-4e7d-ae08-aaf4d3d8d89a
           role: system
-          text: "You are an \"IMO/NCSR Approval Conclusion Analyst\".\n\nYour task\
-            \ is NOT to reconstruct a source table.\nYour task is NOT to extract raw\
-            \ key information into table cells.\nYour task is NOT to output JSON.\n\
-            \nYour only task is:\nRead the source document, PDF page images, and knowledge\
-            \ retrieval results, then produce a decision-oriented review memo for\
-            \ a downstream approval-table node.\n\nThis is an approval-conclusion\
-            \ task.\nThe downstream table is a reviewer decision table, not a source-information\
-            \ table.\n\nEvidence priority:\n1. First priority: PDF page images and\
-            \ visually captured content.\n2. Second priority: extracted document text.\n\
-            3. Third priority: knowledge retrieval results.\n\nIf extracted text conflicts\
-            \ with page-image content, follow the page-image content.\nIf knowledge\
-            \ retrieval conflicts with the source document, follow the source document.\n\
-            \nCore decision semantics:\n- \"✓\" = the aspect is explicitly addressed\
-            \ in the proposal and appears clear, adequate, and free of review concern.\n\
-            - \"N/A\" = the aspect is not mentioned or not evidenced in the proposal.\n\
-            - \"Un\" = the aspect is mentioned, but there is a reviewer concern, ambiguity,\
-            \ insufficiency, inconsistency, or other problem that should be explained\
-            \ in footnote n.\n\nImportant interpretation rule:\n- Do NOT use bare\
-            \ \"U\".\n- Do NOT use \"✓n\".\n- Do NOT use \"-\".\n- Do NOT use empty\
-            \ string \"\".\n- If clearly addressed without issue, use \"✓\".\n- If\
-            \ not mentioned, use \"N/A\".\n- If mentioned but problematic or unclear,\
-            \ use \"Un\".\n\nMandatory discipline:\n1. You must think like a reviewer\
-            \ filling an approval conclusion table, not like an extractor copying\
-            \ source facts.\n2. Except for document/document_proponent and remarks,\
-            \ the final table cells must be marks only.\n3. Narrative content belongs\
-            \ only in footnotes, remarks, and reasoning sections of this memo.\n4.\
-            \ If an aspect is mentioned and has any review concern, ambiguity, insufficiency,\
-            \ inconsistency, or qualification, assign \"Un\" with a footnote.\n5.\
-            \ If an aspect is not mentioned, assign \"N/A\".\n6. If an aspect is clearly\
-            \ and adequately addressed without concern, assign \"✓\".\n7. Do not invent\
-            \ facts, marks, or footnotes not grounded in the evidence.\n8. Keep remarks\
-            \ separate from footnotes.\n9. If multiple aspects share the same reviewer\
-            \ concern, explicitly state that the same footnote number should be reused.\n\
-            10. Footnote numbering must follow first appearance in table-column order.\n\
-            \nYour output must be written in English only.\nDo not output JSON.\n\
-            Do not output Markdown code fences.\nDo not output freeform narrative\
-            \ without structure.\n\nYou must output using exactly these section headings:\n\
-            \nDocument Identification\nDecision Policy\nRow Decision Summary\nColumn\
-            \ Decisions\nFootnote Drafts\nRemarks Candidate\nCross-Column Consistency\
-            \ Checks\nStructured Extraction Hints\n\nSection requirements:\n\nDocument\
-            \ Identification\n- Identify the apparent proposal/document label, proponent/state,\
-            \ measure name, and table type if visible.\n\nDecision Policy\n- Briefly\
-            \ state that this is an approval-conclusion assessment.\n- State that\
-            \ non-document / non-remarks cells should be marks only in the downstream\
-            \ table.\n\nRow Decision Summary\nFor each visible/relevant row, write:\n\
-            Row Label:\nApparent Document/Proponent:\nApparent Remarks/Context:\n\
-            Overall Review Posture:\nGeneral Reliability of Decision:\n\nColumn Decisions\n\
-            - Assess every target table aspect one by one, in exactly the order supplied\
-            \ by the user.\n- For each aspect, use exactly this mini-format:\n\nAspect:\n\
-            Final Mark:\nJudgement Basis:\nFootnote Needed:\nFootnote Draft:\n\nRules\
-            \ for this mini-format:\n- \"Final Mark\" must be exactly one of:\n  -\
-            \ \"✓\"\n  - \"N/A\"\n  - \"U1\", \"U2\", \"U3\", ...\n- \"Judgement Basis\"\
-            \ must be short and decision-oriented.\n- \"Footnote Needed\" must be:\n\
-            \  - \"No\" for \"✓\" and \"N/A\"\n  - \"Yes\" for any \"Un\"\n- \"Footnote\
-            \ Draft\" must be:\n  - \"None.\" for \"✓\" and \"N/A\"\n  - one concise\
-            \ reviewer conclusion sentence for any \"Un\"\n- If an aspect is not mentioned,\
-            \ use \"N/A\", not \"Un\".\n- If an aspect is mentioned and problematic\
-            \ or unclear, use \"Un\", not \"N/A\".\n- If an aspect is clearly addressed\
-            \ and acceptable, use \"✓\".\n\nFootnote Drafts\n- List all distinct reviewer\
-            \ footnotes that should appear in the downstream table.\n- Number footnotes\
-            \ in the order of first appearance following the table aspect order supplied\
-            \ by the user.\n- If later aspects have the same concern, reuse the same\
-            \ footnote number.\n- Keep footnotes concise, formal, and table-ready.\n\
-            \nRemarks Candidate\n- Provide only the likely content for the rightmost\
-            \ Remarks column.\n- Do not place footnote text here.\n\nCross-Column\
-            \ Consistency Checks\n- Highlight important inconsistencies across columns.\n\
-            - Keep this section concise and review-oriented.\n\nStructured Extraction\
-            \ Hints\n- Provide short downstream hints:\n  - document/document_proponent\
-            \ text candidate\n  - remarks text candidate\n  - which aspects should\
-            \ be marks only\n  - which aspects should carry numbered U marks\n  -\
-            \ proposed footnote reuse if any\n\nImportant:\nThe downstream node will\
-            \ build the final JSON table from your memo.\nSo your memo must be conclusion-first,\
-            \ mark-first, and footnote-ready.\nJudgement cells are conclusion cells,\
-            \ not information cells.\nThey may contain only:\n✓ / N/A / U1 / U2 /\
-            \ U3 ..."
+          text: "You are an \"IMO/NCSR Approval Conclusion Analyst\".\n\nYour task is NOT to reconstruct a source table.\nYour task is NOT to extract raw key information into table cells.\nYour task is NOT to output JSON.\n\nYour only task is:\nRead the source document, PDF page images, and knowledge retrieval results, then produce a decision-oriented review memo for a downstream approval-table node.\n\nThis is an approval-conclusion task.\nThe downstream table is a reviewer decision table, not a source-information table.\n\nEvidence priority:\n1. First priority: PDF page images and visually captured content.\n2. Second priority: extracted document text.\n3. Third priority: knowledge retrieval results.\n\nIf extracted text conflicts with page-image content, follow the page-image content.\nIf knowledge retrieval conflicts with the source document, follow the source document.\n\nCore decision semantics:\n- \"✓\" = the aspect is explicitly addressed in the proposal and appears clear, adequate,\
+            \ and free of review concern.\n- \"N/A\" = the aspect is not mentioned or not evidenced in the proposal.\n- \"Un\" = the aspect is mentioned, but there is a reviewer concern, ambiguity, insufficiency, inconsistency, or other problem that should be explained in footnote n.\n\nImportant interpretation rule:\n- Do NOT use bare \"U\".\n- Do NOT use \"✓n\".\n- Do NOT use \"-\".\n- Do NOT use empty string \"\".\n- If clearly addressed without issue, use \"✓\".\n- If not mentioned, use \"N/A\".\n- If mentioned but problematic or unclear, use \"Un\".\n\nMandatory discipline:\n1. You must think like a reviewer filling an approval conclusion table, not like an extractor copying source facts.\n2. Except for document/document_proponent and remarks, the final table cells must be marks only.\n3. Narrative content belongs only in footnotes, remarks, and reasoning sections of this memo.\n4. If an aspect is mentioned and has any review concern, ambiguity, insufficiency, inconsistency, or qualification,\
+            \ assign \"Un\" with a footnote.\n5. If an aspect is not mentioned, assign \"N/A\".\n6. If an aspect is clearly and adequately addressed without concern, assign \"✓\".\n7. Do not invent facts, marks, or footnotes not grounded in the evidence.\n8. Keep remarks separate from footnotes.\n9. If multiple aspects share the same reviewer concern, explicitly state that the same footnote number should be reused.\n10. Footnote numbering must follow first appearance in table-column order.\n\nYour output must be written in English only.\nDo not output JSON.\nDo not output Markdown code fences.\nDo not output freeform narrative without structure.\n\nYou must output using exactly these section headings:\n\nDocument Identification\nDecision Policy\nRow Decision Summary\nColumn Decisions\nFootnote Drafts\nRemarks Candidate\nCross-Column Consistency Checks\nStructured Extraction Hints\n\nSection requirements:\n\nDocument Identification\n- Identify the apparent proposal/document label, proponent/state,\
+            \ measure name, and table type if visible.\n\nDecision Policy\n- Briefly state that this is an approval-conclusion assessment.\n- State that non-document / non-remarks cells should be marks only in the downstream table.\n\nRow Decision Summary\nFor each visible/relevant row, write:\nRow Label:\nApparent Document/Proponent:\nApparent Remarks/Context:\nOverall Review Posture:\nGeneral Reliability of Decision:\n\nColumn Decisions\n- Assess every target table aspect one by one, in exactly the order supplied by the user.\n- For each aspect, use exactly this mini-format:\n\nAspect:\nFinal Mark:\nJudgement Basis:\nFootnote Needed:\nFootnote Draft:\n\nRules for this mini-format:\n- \"Final Mark\" must be exactly one of:\n  - \"✓\"\n  - \"N/A\"\n  - \"U1\", \"U2\", \"U3\", ...\n- \"Judgement Basis\" must be short and decision-oriented.\n- \"Footnote Needed\" must be:\n  - \"No\" for \"✓\" and \"N/A\"\n  - \"Yes\" for any \"Un\"\n- \"Footnote Draft\" must be:\n  - \"None.\" for \"✓\" and\
+            \ \"N/A\"\n  - one concise reviewer conclusion sentence for any \"Un\"\n- If an aspect is not mentioned, use \"N/A\", not \"Un\".\n- If an aspect is mentioned and problematic or unclear, use \"Un\", not \"N/A\".\n- If an aspect is clearly addressed and acceptable, use \"✓\".\n\nFootnote Drafts\n- List all distinct reviewer footnotes that should appear in the downstream table.\n- Number footnotes in the order of first appearance following the table aspect order supplied by the user.\n- If later aspects have the same concern, reuse the same footnote number.\n- Keep footnotes concise, formal, and table-ready.\n\nRemarks Candidate\n- Provide only the likely content for the rightmost Remarks column.\n- Do not place footnote text here.\n\nCross-Column Consistency Checks\n- Highlight important inconsistencies across columns.\n- Keep this section concise and review-oriented.\n\nStructured Extraction Hints\n- Provide short downstream hints:\n  - document/document_proponent text candidate\n\
+            \  - remarks text candidate\n  - which aspects should be marks only\n  - which aspects should carry numbered U marks\n  - proposed footnote reuse if any\n\nImportant:\nThe downstream node will build the final JSON table from your memo.\nSo your memo must be conclusion-first, mark-first, and footnote-ready.\nJudgement cells are conclusion cells, not information cells.\nThey may contain only:\n✓ / N/A / U1 / U2 / U3 ..."
         - id: 568c4ed8-0346-4bad-8253-4d8e2665a44c
           role: user
-          text: "Current target table type:\nPROPOSED SHIP ROUTEING SYSTEMS\n\nProduce\
-            \ a structured English review memo for this table type.\n\nYou must assess\
-            \ the row(s) against these table aspects in exactly this order:\n\n1.\
-            \ document_proponent\n2. objectives\n3. demonstrated_need\n4. reason_for_proposal_preferred\n\
-            5. history_of_incidents\n6. applicability\n7. impact_on_shipping\n8. location_positions\n\
-            9. reference_chart_details\n10. chartlet_appropriate_one\n11. cooperation_between_states\n\
-            12. following_existing_traffic_patterns\n13. aids_to_navigation\n14. information_on_traffic_patterns\n\
-            15. hydrographic_surveys_and_charts_adequacy\n16. alternative_measure\n\
-            17. offshore_structures\n18. environmental_factors\n19. prevent_reduce_risk\n\
-            20. sufficient_justification\n21. adverse_effect_to_ports_and_harbours_including_tss\n\
-            22. limited_to_what_is_essential\n23. aids_or_services\n24. fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\n\
-            25. other_measures_taken\n26. consultations_with_mariners_and_other_users\n\
-            27. monitoring_compliance_and_actions_taken\n28. correct_format_for_description_of_proposed_system_gpsr\n\
-            29. adherence_to_other_guidance_only_if_observed_msc_1_circ_1060\n30.\
-            \ remarks\n\nWhen writing the \"Column Decisions\" section, use the exact\
-            \ aspect names above.\n\nPay particular attention to:\n- whether the need\
-            \ and preferred proposal are sufficiently justified;\n- whether incident\
-            \ history is present and relevant;\n- whether applicability and impact\
-            \ on shipping are clearly supported;\n- whether location/positions, chart\
-            \ references, and chartlet evidence are complete;\n- whether cooperation\
-            \ between States is required and, if so, evidenced;\n- whether the proposal\
-            \ follows existing traffic patterns and is supported by traffic information;\n\
-            - whether hydrographic and chart adequacy are convincingly supported;\n\
-            - whether alternatives are considered;\n- whether offshore structures,\
-            \ environmental factors, ports, harbours, and fishing activities are adequately\
-            \ addressed;\n- whether monitoring, consultation, and services are sufficiently\
-            \ described;\n- whether the format of the proposed system description\
-            \ appears compliant;\n- whether \"other guidance\" is actually evidenced\
-            \ or should be N/A.\n\nAdditional mandatory rules for this node:\n1. This\
-            \ is an approval-conclusion table.\n2. Except for document_proponent and\
-            \ remarks, every downstream table cell must be a mark only.\n3. The only\
-            \ allowed final marks are:\n   ✓\n   N/A\n   U1, U2, U3, ...\n4. Use \"\
-            ✓\" only when the aspect is explicitly addressed and clearly acceptable\
-            \ without review concern.\n5. Use \"N/A\" when the aspect is not mentioned.\n\
-            6. Use \"U1\", \"U2\", \"U3\", ... when the aspect is mentioned but unclear,\
-            \ insufficient, inconsistent, unsupported, or otherwise problematic.\n\
-            7. Do not use bare \"U\".\n8. Do not use \"✓1\".\n9. Do not use \"-\"\
-            .\n10. Do not use empty string \"\".\n11. Every \"Un\" must have a footnote\
-            \ draft.\n12. Footnote numbers must increase in the order of first appearance\
-            \ following the table aspect order.\n13. If the same reviewer concern\
-            \ applies to multiple aspects, reuse the same footnote number.\n14. Footnote\
-            \ Draft must be a concise reviewer conclusion sentence suitable for placement\
-            \ below the table.\n15. Do not place descriptive summaries into future\
-            \ table cells.\n\nIf the subtitle is visible, preserve its wording as\
-            \ closely as possible in your discussion.\nIf remarks are visible, keep\
-            \ them separate.\n\nInput context:\n\n[Extracted document text]\n{{#1774943864283.text#}}\n\
-            \n[PDF page images or page-image-derived content]\n{{#1775705579726.files#}}\n\
-            \n[Knowledge retrieval result]\n{{#context#}}"
+          text: "Current target table type:\nPROPOSED SHIP ROUTEING SYSTEMS\n\nProduce a structured English review memo for this table type.\n\nYou must assess the row(s) against these table aspects in exactly this order:\n\n1. document_proponent\n2. objectives\n3. demonstrated_need\n4. reason_for_proposal_preferred\n5. history_of_incidents\n6. applicability\n7. impact_on_shipping\n8. location_positions\n9. reference_chart_details\n10. chartlet_appropriate_one\n11. cooperation_between_states\n12. following_existing_traffic_patterns\n13. aids_to_navigation\n14. information_on_traffic_patterns\n15. hydrographic_surveys_and_charts_adequacy\n16. alternative_measure\n17. offshore_structures\n18. environmental_factors\n19. prevent_reduce_risk\n20. sufficient_justification\n21. adverse_effect_to_ports_and_harbours_including_tss\n22. limited_to_what_is_essential\n23. aids_or_services\n24. fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\n25. other_measures_taken\n26. consultations_with_mariners_and_other_users\n\
+            27. monitoring_compliance_and_actions_taken\n28. correct_format_for_description_of_proposed_system_gpsr\n29. adherence_to_other_guidance_only_if_observed_msc_1_circ_1060\n30. remarks\n\nWhen writing the \"Column Decisions\" section, use the exact aspect names above.\n\nPay particular attention to:\n- whether the need and preferred proposal are sufficiently justified;\n- whether incident history is present and relevant;\n- whether applicability and impact on shipping are clearly supported;\n- whether location/positions, chart references, and chartlet evidence are complete;\n- whether cooperation between States is required and, if so, evidenced;\n- whether the proposal follows existing traffic patterns and is supported by traffic information;\n- whether hydrographic and chart adequacy are convincingly supported;\n- whether alternatives are considered;\n- whether offshore structures, environmental factors, ports, harbours, and fishing activities are adequately addressed;\n- whether\
+            \ monitoring, consultation, and services are sufficiently described;\n- whether the format of the proposed system description appears compliant;\n- whether \"other guidance\" is actually evidenced or should be N/A.\n\nAdditional mandatory rules for this node:\n1. This is an approval-conclusion table.\n2. Except for document_proponent and remarks, every downstream table cell must be a mark only.\n3. The only allowed final marks are:\n   ✓\n   N/A\n   U1, U2, U3, ...\n4. Use \"✓\" only when the aspect is explicitly addressed and clearly acceptable without review concern.\n5. Use \"N/A\" when the aspect is not mentioned.\n6. Use \"U1\", \"U2\", \"U3\", ... when the aspect is mentioned but unclear, insufficient, inconsistent, unsupported, or otherwise problematic.\n7. Do not use bare \"U\".\n8. Do not use \"✓1\".\n9. Do not use \"-\".\n10. Do not use empty string \"\".\n11. Every \"Un\" must have a footnote draft.\n12. Footnote numbers must increase in the order of first appearance\
+            \ following the table aspect order.\n13. If the same reviewer concern applies to multiple aspects, reuse the same footnote number.\n14. Footnote Draft must be a concise reviewer conclusion sentence suitable for placement below the table.\n15. Do not place descriptive summaries into future table cells.\n\nIf the subtitle is visible, preserve its wording as closely as possible in your discussion.\nIf remarks are visible, keep them separate.\n\nInput context:\n\n[Extracted document text]\n{{#1774943864283.text#}}\n\n[PDF page images or page-image-derived content]\n{{#1775705579726.files#}}\n\n[Knowledge retrieval result]\n{{#context#}}"
         selected: false
         structured_output:
           schema:
@@ -1761,8 +1417,7 @@ workflow:
 
             Your only task is:
 
-            Convert the approval-conclusion memo produced by the upstream review node
-            into one strict, valid, directly parseable JSON object.
+            Convert the approval-conclusion memo produced by the upstream review node into one strict, valid, directly parseable JSON object.
 
 
             This node is a pure structuring node.
@@ -1796,8 +1451,7 @@ workflow:
 
             2. Do not output anything other than JSON.
 
-            3. Do not output Markdown, code fences, explanations, comments, introductions,
-            or summaries.
+            3. Do not output Markdown, code fences, explanations, comments, introductions, or summaries.
 
             4. All field names must use double quotes.
 
@@ -1805,16 +1459,13 @@ workflow:
 
             6. Do not use trailing commas.
 
-            7. Do not invent facts, marks, footnotes, remarks, titles, subtitles,
-            or row values.
+            7. Do not invent facts, marks, footnotes, remarks, titles, subtitles, or row values.
 
-            8. If the approval-conclusion memo does not provide a value for a text
-            field, use "".
+            8. If the approval-conclusion memo does not provide a value for a text field, use "".
 
             9. Preserve the exact final mark stated in the memo whenever possible.
 
-            10. Preserve footnote numbering exactly as stated in the memo whenever
-            possible.
+            10. Preserve footnote numbering exactly as stated in the memo whenever possible.
 
 
             Critical structuring rule:
@@ -1868,8 +1519,7 @@ workflow:
 
             - "N/A" = not mentioned
 
-            - "Un" = mentioned, but unclear, insufficient, inconsistent, unsupported,
-            or otherwise problematic, with reviewer footnote n
+            - "Un" = mentioned, but unclear, insufficient, inconsistent, unsupported, or otherwise problematic, with reviewer footnote n
 
 
             Footnote rules:
@@ -1880,13 +1530,11 @@ workflow:
 
             3. Do not rewrite footnotes into evidence summaries.
 
-            4. If the memo clearly says that multiple aspects reuse the same footnote,
-            preserve that reuse.
+            4. If the memo clearly says that multiple aspects reuse the same footnote, preserve that reuse.
 
             5. Remove any footnote not referenced by a "Un" mark.
 
-            6. Keep footnote numbering exactly as already determined by the upstream
-            memo.
+            6. Keep footnote numbering exactly as already determined by the upstream memo.
 
             7. Do not renumber unless the upstream memo is internally inconsistent.
 
@@ -1895,8 +1543,7 @@ workflow:
 
             - document / document_proponent: short row label only
 
-            - remarks: only the final Remarks-column content or concise row context
-            stated in the memo
+            - remarks: only the final Remarks-column content or concise row context stated in the memo
 
             - do not place footnote text into remarks
 
@@ -1911,8 +1558,7 @@ workflow:
 
             3. Do not merge rows.
 
-            4. Do not split one row into multiple rows unless the upstream memo explicitly
-            indicates multiple rows.
+            4. Do not split one row into multiple rows unless the upstream memo explicitly indicates multiple rows.
 
 
             Missing-information rule:
@@ -1921,8 +1567,7 @@ workflow:
 
             - For judgment fields: do not invent a mark.
 
-            - If the memo is incomplete for a judgment field, copy the most conservative
-            explicit value from the memo only.
+            - If the memo is incomplete for a judgment field, copy the most conservative explicit value from the memo only.
 
             - Do not infer from outside evidence.
 
@@ -1931,68 +1576,19 @@ workflow:
 
             - Follow the exact fixed structure requested by the user prompt.
 
-            - If the user prompt allows blank subtitle and the memo does not clearly
-            provide one, output "".
+            - If the user prompt allows blank subtitle and the memo does not clearly provide one, output "".
 
 
             This node must be conservative:
 
-            If the memo is incomplete, preserve that incompleteness in the JSON rather
-            than making a new judgment.'
+            If the memo is incomplete, preserve that incompleteness in the JSON rather than making a new judgment.'
         - id: d91a7c97-2a8f-4f6b-91e0-9084a8c3008d
           role: user
-          text: "Current target table type:\nPROPOSED SHIP ROUTEING SYSTEMS\n\nYou\
-            \ must output JSON with exactly the following structure.\nDo not add fields.\n\
-            Do not remove fields.\nDo not rename fields.\n\n{\n  \"table_type\": \"\
-            proposed_ship_routeing_systems\",\n  \"title\": \"ANNEX\",\n  \"subtitle\"\
-            : \"PROPOSED SHIP ROUTEING SYSTEMS\",\n  \"column_order\": [\n    \"document_proponent\"\
-            ,\n    \"objectives\",\n    \"demonstrated_need\",\n    \"reason_for_proposal_preferred\"\
-            ,\n    \"history_of_incidents\",\n    \"applicability\",\n    \"impact_on_shipping\"\
-            ,\n    \"location_positions\",\n    \"reference_chart_details\",\n   \
-            \ \"chartlet_appropriate_one\",\n    \"cooperation_between_states\",\n\
-            \    \"following_existing_traffic_patterns\",\n    \"aids_to_navigation\"\
-            ,\n    \"information_on_traffic_patterns\",\n    \"hydrographic_surveys_and_charts_adequacy\"\
-            ,\n    \"alternative_measure\",\n    \"offshore_structures\",\n    \"\
-            environmental_factors\",\n    \"prevent_reduce_risk\",\n    \"sufficient_justification\"\
-            ,\n    \"adverse_effect_to_ports_and_harbours_including_tss\",\n    \"\
-            limited_to_what_is_essential\",\n    \"aids_or_services\",\n    \"fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\"\
-            ,\n    \"other_measures_taken\",\n    \"consultations_with_mariners_and_other_users\"\
-            ,\n    \"monitoring_compliance_and_actions_taken\",\n    \"correct_format_for_description_of_proposed_system_gpsr\"\
-            ,\n    \"adherence_to_other_guidance_only_if_observed_msc_1_circ_1060\"\
-            ,\n    \"remarks\"\n  ],\n  \"rows\": [\n    {\n      \"document_proponent\"\
-            : \"\",\n      \"objectives\": \"\",\n      \"demonstrated_need\": \"\"\
-            ,\n      \"reason_for_proposal_preferred\": \"\",\n      \"history_of_incidents\"\
-            : \"\",\n      \"applicability\": \"\",\n      \"impact_on_shipping\"\
-            : \"\",\n      \"location_positions\": \"\",\n      \"reference_chart_details\"\
-            : \"\",\n      \"chartlet_appropriate_one\": \"\",\n      \"cooperation_between_states\"\
-            : \"\",\n      \"following_existing_traffic_patterns\": \"\",\n      \"\
-            aids_to_navigation\": \"\",\n      \"information_on_traffic_patterns\"\
-            : \"\",\n      \"hydrographic_surveys_and_charts_adequacy\": \"\",\n \
-            \     \"alternative_measure\": \"\",\n      \"offshore_structures\": \"\
-            \",\n      \"environmental_factors\": \"\",\n      \"prevent_reduce_risk\"\
-            : \"\",\n      \"sufficient_justification\": \"\",\n      \"adverse_effect_to_ports_and_harbours_including_tss\"\
-            : \"\",\n      \"limited_to_what_is_essential\": \"\",\n      \"aids_or_services\"\
-            : \"\",\n      \"fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\"\
-            : \"\",\n      \"other_measures_taken\": \"\",\n      \"consultations_with_mariners_and_other_users\"\
-            : \"\",\n      \"monitoring_compliance_and_actions_taken\": \"\",\n  \
-            \    \"correct_format_for_description_of_proposed_system_gpsr\": \"\"\
-            ,\n      \"adherence_to_other_guidance_only_if_observed_msc_1_circ_1060\"\
-            : \"\",\n      \"remarks\": \"\"\n    }\n  ],\n  \"footnotes\": [\n  \
-            \  {\n      \"id\": \"\",\n      \"text\": \"\"\n    }\n  ]\n}\n\nAdditional\
-            \ mandatory rules:\n1. This is a pure structuring step.\n2. Use only the\
-            \ approval-conclusion memo as the source of truth.\n3. Do not make any\
-            \ new judgment.\n4. Except for \"document_proponent\" and \"remarks\"\
-            , every row field must contain marks only.\n5. The only allowed judgment-cell\
-            \ values are:\n   \"✓\"\n   \"N/A\"\n   \"U1\", \"U2\", \"U3\", ...\n\
-            6. Never place factual summaries, evidence, or reasoning text into judgment\
-            \ cells.\n7. If a \"Un\" mark appears in a row cell, there must be one\
-            \ corresponding footnote with id \"n\".\n8. Preserve footnote reuse exactly\
-            \ as indicated by the memo.\n9. Footnotes must contain concise reviewer\
-            \ conclusion text only.\n10. remarks must contain only the final Remarks-column\
-            \ content, never footnotes.\n11. If the memo does not clearly provide\
-            \ subtitle text beyond the fixed title logic, keep:\n   \"subtitle\":\
-            \ \"PROPOSED SHIP ROUTEING SYSTEMS\"\n12. Preserve every row identified\
-            \ in the memo.\n\nInput context:\n\n[Analysis result]\n{{#context#}}"
+          text: "Current target table type:\nPROPOSED SHIP ROUTEING SYSTEMS\n\nYou must output JSON with exactly the following structure.\nDo not add fields.\nDo not remove fields.\nDo not rename fields.\n\n{\n  \"table_type\": \"proposed_ship_routeing_systems\",\n  \"title\": \"ANNEX\",\n  \"subtitle\": \"PROPOSED SHIP ROUTEING SYSTEMS\",\n  \"column_order\": [\n    \"document_proponent\",\n    \"objectives\",\n    \"demonstrated_need\",\n    \"reason_for_proposal_preferred\",\n    \"history_of_incidents\",\n    \"applicability\",\n    \"impact_on_shipping\",\n    \"location_positions\",\n    \"reference_chart_details\",\n    \"chartlet_appropriate_one\",\n    \"cooperation_between_states\",\n    \"following_existing_traffic_patterns\",\n    \"aids_to_navigation\",\n    \"information_on_traffic_patterns\",\n    \"hydrographic_surveys_and_charts_adequacy\",\n    \"alternative_measure\",\n    \"offshore_structures\",\n    \"environmental_factors\",\n    \"prevent_reduce_risk\",\n    \"sufficient_justification\"\
+            ,\n    \"adverse_effect_to_ports_and_harbours_including_tss\",\n    \"limited_to_what_is_essential\",\n    \"aids_or_services\",\n    \"fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\",\n    \"other_measures_taken\",\n    \"consultations_with_mariners_and_other_users\",\n    \"monitoring_compliance_and_actions_taken\",\n    \"correct_format_for_description_of_proposed_system_gpsr\",\n    \"adherence_to_other_guidance_only_if_observed_msc_1_circ_1060\",\n    \"remarks\"\n  ],\n  \"rows\": [\n    {\n      \"document_proponent\": \"\",\n      \"objectives\": \"\",\n      \"demonstrated_need\": \"\",\n      \"reason_for_proposal_preferred\": \"\",\n      \"history_of_incidents\": \"\",\n      \"applicability\": \"\",\n      \"impact_on_shipping\": \"\",\n      \"location_positions\": \"\",\n      \"reference_chart_details\": \"\",\n      \"chartlet_appropriate_one\": \"\",\n      \"cooperation_between_states\": \"\",\n      \"following_existing_traffic_patterns\"\
+            : \"\",\n      \"aids_to_navigation\": \"\",\n      \"information_on_traffic_patterns\": \"\",\n      \"hydrographic_surveys_and_charts_adequacy\": \"\",\n      \"alternative_measure\": \"\",\n      \"offshore_structures\": \"\",\n      \"environmental_factors\": \"\",\n      \"prevent_reduce_risk\": \"\",\n      \"sufficient_justification\": \"\",\n      \"adverse_effect_to_ports_and_harbours_including_tss\": \"\",\n      \"limited_to_what_is_essential\": \"\",\n      \"aids_or_services\": \"\",\n      \"fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\": \"\",\n      \"other_measures_taken\": \"\",\n      \"consultations_with_mariners_and_other_users\": \"\",\n      \"monitoring_compliance_and_actions_taken\": \"\",\n      \"correct_format_for_description_of_proposed_system_gpsr\": \"\",\n      \"adherence_to_other_guidance_only_if_observed_msc_1_circ_1060\": \"\",\n      \"remarks\": \"\"\n    }\n  ],\n  \"footnotes\": [\n    {\n      \"id\": \"\",\n  \
+            \    \"text\": \"\"\n    }\n  ]\n}\n\nAdditional mandatory rules:\n1. This is a pure structuring step.\n2. Use only the approval-conclusion memo as the source of truth.\n3. Do not make any new judgment.\n4. Except for \"document_proponent\" and \"remarks\", every row field must contain marks only.\n5. The only allowed judgment-cell values are:\n   \"✓\"\n   \"N/A\"\n   \"U1\", \"U2\", \"U3\", ...\n6. Never place factual summaries, evidence, or reasoning text into judgment cells.\n7. If a \"Un\" mark appears in a row cell, there must be one corresponding footnote with id \"n\".\n8. Preserve footnote reuse exactly as indicated by the memo.\n9. Footnotes must contain concise reviewer conclusion text only.\n10. remarks must contain only the final Remarks-column content, never footnotes.\n11. If the memo does not clearly provide subtitle text beyond the fixed title logic, keep:\n   \"subtitle\": \"PROPOSED SHIP ROUTEING SYSTEMS\"\n12. Preserve every row identified in the memo.\n\n\
+            Input context:\n\n[Analysis result]\n{{#context#}}"
         selected: false
         structured_output:
           schema:
@@ -2233,132 +1829,18 @@ workflow:
         prompt_template:
         - id: 0c2bb321-40c5-4e7d-ae08-aaf4d3d8d89a
           role: system
-          text: "You are an \"IMO/NCSR Approval Conclusion Analyst\".\n\nYour task\
-            \ is NOT to reconstruct a source table.\nYour task is NOT to extract raw\
-            \ key information into table cells.\nYour task is NOT to output JSON.\n\
-            \nYour only task is:\nRead the source document, PDF page images, and knowledge\
-            \ retrieval results, then produce a decision-oriented review memo for\
-            \ a downstream approval-table node.\n\nThis is an approval-conclusion\
-            \ task.\nThe downstream table is a reviewer decision table, not a source-information\
-            \ table.\n\nEvidence priority:\n1. First priority: PDF page images and\
-            \ visually captured content.\n2. Second priority: extracted document text.\n\
-            3. Third priority: knowledge retrieval results.\n\nIf extracted text conflicts\
-            \ with page-image content, follow the page-image content.\nIf knowledge\
-            \ retrieval conflicts with the source document, follow the source document.\n\
-            \nCore decision semantics:\n- \"✓\" = the aspect is explicitly addressed\
-            \ in the proposal and appears clear, adequate, and free of review concern.\n\
-            - \"N/A\" = the aspect is not mentioned or not evidenced in the proposal.\n\
-            - \"Un\" = the aspect is mentioned, but there is a reviewer concern, ambiguity,\
-            \ insufficiency, inconsistency, or other problem that should be explained\
-            \ in footnote n.\n\nImportant interpretation rule:\n- Do NOT use bare\
-            \ \"U\".\n- Do NOT use \"✓n\".\n- Do NOT use \"-\".\n- Do NOT use empty\
-            \ string \"\".\n- If clearly addressed without issue, use \"✓\".\n- If\
-            \ not mentioned, use \"N/A\".\n- If mentioned but problematic or unclear,\
-            \ use \"Un\".\n\nMandatory discipline:\n1. You must think like a reviewer\
-            \ filling an approval conclusion table, not like an extractor copying\
-            \ source facts.\n2. Except for document/document_proponent and remarks,\
-            \ the final table cells must be marks only.\n3. Narrative content belongs\
-            \ only in footnotes, remarks, and reasoning sections of this memo.\n4.\
-            \ If an aspect is mentioned and has any review concern, ambiguity, insufficiency,\
-            \ inconsistency, or qualification, assign \"Un\" with a footnote.\n5.\
-            \ If an aspect is not mentioned, assign \"N/A\".\n6. If an aspect is clearly\
-            \ and adequately addressed without concern, assign \"✓\".\n7. Do not invent\
-            \ facts, marks, or footnotes not grounded in the evidence.\n8. Keep remarks\
-            \ separate from footnotes.\n9. If multiple aspects share the same reviewer\
-            \ concern, explicitly state that the same footnote number should be reused.\n\
-            10. Footnote numbering must follow first appearance in table-column order.\n\
-            \nYour output must be written in English only.\nDo not output JSON.\n\
-            Do not output Markdown code fences.\nDo not output freeform narrative\
-            \ without structure.\n\nYou must output using exactly these section headings:\n\
-            \nDocument Identification\nDecision Policy\nRow Decision Summary\nColumn\
-            \ Decisions\nFootnote Drafts\nRemarks Candidate\nCross-Column Consistency\
-            \ Checks\nStructured Extraction Hints\n\nSection requirements:\n\nDocument\
-            \ Identification\n- Identify the apparent proposal/document label, proponent/state,\
-            \ measure name, and table type if visible.\n\nDecision Policy\n- Briefly\
-            \ state that this is an approval-conclusion assessment.\n- State that\
-            \ non-document / non-remarks cells should be marks only in the downstream\
-            \ table.\n\nRow Decision Summary\nFor each visible/relevant row, write:\n\
-            Row Label:\nApparent Document/Proponent:\nApparent Remarks/Context:\n\
-            Overall Review Posture:\nGeneral Reliability of Decision:\n\nColumn Decisions\n\
-            - Assess every target table aspect one by one, in exactly the order supplied\
-            \ by the user.\n- For each aspect, use exactly this mini-format:\n\nAspect:\n\
-            Final Mark:\nJudgement Basis:\nFootnote Needed:\nFootnote Draft:\n\nRules\
-            \ for this mini-format:\n- \"Final Mark\" must be exactly one of:\n  -\
-            \ \"✓\"\n  - \"N/A\"\n  - \"U1\", \"U2\", \"U3\", ...\n- \"Judgement Basis\"\
-            \ must be short and decision-oriented.\n- \"Footnote Needed\" must be:\n\
-            \  - \"No\" for \"✓\" and \"N/A\"\n  - \"Yes\" for any \"Un\"\n- \"Footnote\
-            \ Draft\" must be:\n  - \"None.\" for \"✓\" and \"N/A\"\n  - one concise\
-            \ reviewer conclusion sentence for any \"Un\"\n- If an aspect is not mentioned,\
-            \ use \"N/A\", not \"Un\".\n- If an aspect is mentioned and problematic\
-            \ or unclear, use \"Un\", not \"N/A\".\n- If an aspect is clearly addressed\
-            \ and acceptable, use \"✓\".\n\nFootnote Drafts\n- List all distinct reviewer\
-            \ footnotes that should appear in the downstream table.\n- Number footnotes\
-            \ in the order of first appearance following the table aspect order supplied\
-            \ by the user.\n- If later aspects have the same concern, reuse the same\
-            \ footnote number.\n- Keep footnotes concise, formal, and table-ready.\n\
-            \nRemarks Candidate\n- Provide only the likely content for the rightmost\
-            \ Remarks column.\n- Do not place footnote text here.\n\nCross-Column\
-            \ Consistency Checks\n- Highlight important inconsistencies across columns.\n\
-            - Keep this section concise and review-oriented.\n\nStructured Extraction\
-            \ Hints\n- Provide short downstream hints:\n  - document/document_proponent\
-            \ text candidate\n  - remarks text candidate\n  - which aspects should\
-            \ be marks only\n  - which aspects should carry numbered U marks\n  -\
-            \ proposed footnote reuse if any\n\nImportant:\nThe downstream node will\
-            \ build the final JSON table from your memo.\nSo your memo must be conclusion-first,\
-            \ mark-first, and footnote-ready.\nJudgement cells are conclusion cells,\
-            \ not information cells.\nThey may contain only:\n✓ / N/A / U1 / U2 /\
-            \ U3 ..."
+          text: "You are an \"IMO/NCSR Approval Conclusion Analyst\".\n\nYour task is NOT to reconstruct a source table.\nYour task is NOT to extract raw key information into table cells.\nYour task is NOT to output JSON.\n\nYour only task is:\nRead the source document, PDF page images, and knowledge retrieval results, then produce a decision-oriented review memo for a downstream approval-table node.\n\nThis is an approval-conclusion task.\nThe downstream table is a reviewer decision table, not a source-information table.\n\nEvidence priority:\n1. First priority: PDF page images and visually captured content.\n2. Second priority: extracted document text.\n3. Third priority: knowledge retrieval results.\n\nIf extracted text conflicts with page-image content, follow the page-image content.\nIf knowledge retrieval conflicts with the source document, follow the source document.\n\nCore decision semantics:\n- \"✓\" = the aspect is explicitly addressed in the proposal and appears clear, adequate,\
+            \ and free of review concern.\n- \"N/A\" = the aspect is not mentioned or not evidenced in the proposal.\n- \"Un\" = the aspect is mentioned, but there is a reviewer concern, ambiguity, insufficiency, inconsistency, or other problem that should be explained in footnote n.\n\nImportant interpretation rule:\n- Do NOT use bare \"U\".\n- Do NOT use \"✓n\".\n- Do NOT use \"-\".\n- Do NOT use empty string \"\".\n- If clearly addressed without issue, use \"✓\".\n- If not mentioned, use \"N/A\".\n- If mentioned but problematic or unclear, use \"Un\".\n\nMandatory discipline:\n1. You must think like a reviewer filling an approval conclusion table, not like an extractor copying source facts.\n2. Except for document/document_proponent and remarks, the final table cells must be marks only.\n3. Narrative content belongs only in footnotes, remarks, and reasoning sections of this memo.\n4. If an aspect is mentioned and has any review concern, ambiguity, insufficiency, inconsistency, or qualification,\
+            \ assign \"Un\" with a footnote.\n5. If an aspect is not mentioned, assign \"N/A\".\n6. If an aspect is clearly and adequately addressed without concern, assign \"✓\".\n7. Do not invent facts, marks, or footnotes not grounded in the evidence.\n8. Keep remarks separate from footnotes.\n9. If multiple aspects share the same reviewer concern, explicitly state that the same footnote number should be reused.\n10. Footnote numbering must follow first appearance in table-column order.\n\nYour output must be written in English only.\nDo not output JSON.\nDo not output Markdown code fences.\nDo not output freeform narrative without structure.\n\nYou must output using exactly these section headings:\n\nDocument Identification\nDecision Policy\nRow Decision Summary\nColumn Decisions\nFootnote Drafts\nRemarks Candidate\nCross-Column Consistency Checks\nStructured Extraction Hints\n\nSection requirements:\n\nDocument Identification\n- Identify the apparent proposal/document label, proponent/state,\
+            \ measure name, and table type if visible.\n\nDecision Policy\n- Briefly state that this is an approval-conclusion assessment.\n- State that non-document / non-remarks cells should be marks only in the downstream table.\n\nRow Decision Summary\nFor each visible/relevant row, write:\nRow Label:\nApparent Document/Proponent:\nApparent Remarks/Context:\nOverall Review Posture:\nGeneral Reliability of Decision:\n\nColumn Decisions\n- Assess every target table aspect one by one, in exactly the order supplied by the user.\n- For each aspect, use exactly this mini-format:\n\nAspect:\nFinal Mark:\nJudgement Basis:\nFootnote Needed:\nFootnote Draft:\n\nRules for this mini-format:\n- \"Final Mark\" must be exactly one of:\n  - \"✓\"\n  - \"N/A\"\n  - \"U1\", \"U2\", \"U3\", ...\n- \"Judgement Basis\" must be short and decision-oriented.\n- \"Footnote Needed\" must be:\n  - \"No\" for \"✓\" and \"N/A\"\n  - \"Yes\" for any \"Un\"\n- \"Footnote Draft\" must be:\n  - \"None.\" for \"✓\" and\
+            \ \"N/A\"\n  - one concise reviewer conclusion sentence for any \"Un\"\n- If an aspect is not mentioned, use \"N/A\", not \"Un\".\n- If an aspect is mentioned and problematic or unclear, use \"Un\", not \"N/A\".\n- If an aspect is clearly addressed and acceptable, use \"✓\".\n\nFootnote Drafts\n- List all distinct reviewer footnotes that should appear in the downstream table.\n- Number footnotes in the order of first appearance following the table aspect order supplied by the user.\n- If later aspects have the same concern, reuse the same footnote number.\n- Keep footnotes concise, formal, and table-ready.\n\nRemarks Candidate\n- Provide only the likely content for the rightmost Remarks column.\n- Do not place footnote text here.\n\nCross-Column Consistency Checks\n- Highlight important inconsistencies across columns.\n- Keep this section concise and review-oriented.\n\nStructured Extraction Hints\n- Provide short downstream hints:\n  - document/document_proponent text candidate\n\
+            \  - remarks text candidate\n  - which aspects should be marks only\n  - which aspects should carry numbered U marks\n  - proposed footnote reuse if any\n\nImportant:\nThe downstream node will build the final JSON table from your memo.\nSo your memo must be conclusion-first, mark-first, and footnote-ready.\nJudgement cells are conclusion cells, not information cells.\nThey may contain only:\n✓ / N/A / U1 / U2 / U3 ..."
         - id: 2dd6478e-c268-4a0e-8917-24adf0d66b5f
           role: user
-          text: "Current target table type:\nTRAFFIC SEPARATION SCHEMES AND ROUTEING\
-            \ MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES\n\nProduce a structured\
-            \ English review memo for this table type.\n\nYou must assess the row(s)\
-            \ against these table aspects in exactly this order:\n\n1. document_proponent\n\
-            2. objectives\n3. demonstrated_need\n4. reason_for_proposal_preferred\n\
-            5. history_of_incidents\n6. applicability\n7. impact_on_shipping\n8. location_positions\n\
-            9. reference_chart_details\n10. chartlet_appropriate_one\n11. cooperation_between_states\n\
-            12. following_existing_traffic_patterns\n13. aids_to_navigation\n14. information_on_traffic_patterns\n\
-            15. hydrographic_surveys_and_charts_adequacy\n16. alternative_measure\n\
-            17. offshore_structures\n18. environmental_factors\n19. prevent_reduce_risk\n\
-            20. sufficient_justification\n21. adverse_effect_to_ports_and_harbours_including_tss\n\
-            22. limited_to_what_is_essential\n23. aids_or_services\n24. fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\n\
-            25. other_measures_taken\n26. consultations_with_mariners_and_other_users\n\
-            27. monitoring_compliance_and_actions_taken\n28. correct_format_for_description_of_proposed_system_gpsr\n\
-            29. adherence_to_other_guidance_only_if_observed_msc_1_circ_1060\n30.\
-            \ remarks\n\nWhen writing the \"Column Decisions\" section, use the exact\
-            \ aspect names above.\n\nPay particular attention to:\n- whether the need\
-            \ and justification for the proposed scheme or routeing measure are clearly\
-            \ supported;\n- whether the preferred proposal is convincingly explained;\n\
-            - whether incident history, impact, and applicability are evidenced;\n\
-            - whether chart details, chartlet, location, and positional information\
-            \ are complete;\n- whether existing traffic patterns, aids to navigation,\
-            \ and traffic information support the proposal;\n- whether hydrographic\
-            \ support is sufficient;\n- whether alternatives are addressed;\n- whether\
-            \ offshore structures, environmental factors, ports, harbours, and fishing\
-            \ activities are considered;\n- whether the proposal is limited to what\
-            \ is essential;\n- whether services, consultation, and compliance monitoring\
-            \ are adequately addressed;\n- whether the system description format appears\
-            \ correct.\n\nAdditional mandatory rules for this node:\n1. This is an\
-            \ approval-conclusion table.\n2. Except for document_proponent and remarks,\
-            \ every downstream table cell must be a mark only.\n3. The only allowed\
-            \ final marks are:\n   ✓\n   N/A\n   U1, U2, U3, ...\n4. Use \"✓\" only\
-            \ when the aspect is explicitly addressed and clearly acceptable without\
-            \ review concern.\n5. Use \"N/A\" when the aspect is not mentioned.\n\
-            6. Use \"U1\", \"U2\", \"U3\", ... when the aspect is mentioned but unclear,\
-            \ insufficient, inconsistent, unsupported, or otherwise problematic.\n\
-            7. Do not use bare \"U\".\n8. Do not use \"✓1\".\n9. Do not use \"-\"\
-            .\n10. Do not use empty string \"\".\n11. Every \"Un\" must have a footnote\
-            \ draft.\n12. Footnote numbers must increase in the order of first appearance\
-            \ following the table aspect order.\n13. If the same reviewer concern\
-            \ applies to multiple aspects, reuse the same footnote number.\n14. Footnote\
-            \ Draft must be a concise reviewer conclusion sentence suitable for placement\
-            \ below the table.\n15. Do not place descriptive summaries into future\
-            \ table cells.\n\nIf the subtitle is visible, preserve its wording as\
-            \ closely as possible in your discussion.\nIf remarks are visible, keep\
-            \ them separate from footnotes.\n\nInput context:\n\n[Extracted document\
-            \ text]\n{{#1774943864283.text#}}\n\n[PDF page images or page-image-derived\
-            \ content]\n{{#1775705579726.files#}}\n\n[Knowledge retrieval result]\n\
-            {{#context#}}"
+          text: "Current target table type:\nTRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES\n\nProduce a structured English review memo for this table type.\n\nYou must assess the row(s) against these table aspects in exactly this order:\n\n1. document_proponent\n2. objectives\n3. demonstrated_need\n4. reason_for_proposal_preferred\n5. history_of_incidents\n6. applicability\n7. impact\n8. location_positions\n9. reference_chart_details\n10. chartlet_appropriate_one\n11. cooperation_between_states\n12. following_existing_traffic_patterns\n13. aids_to_navigation\n14. information_on_traffic_patterns\n15. hydrographic_surveys_and_charts_adequacy\n16. alternative_measures\n17. offshore_structures\n18. environmental_factors\n19. prevent_reduce_risk\n20. sufficient_justification\n21. adverse_effect_to_ports_and_harbours_including_pts\n22. limited_to_what_is_essential\n23. availability_aids_or_services\n24. fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\n\
+            25. other_measures_taken\n26. consultations_with_mariners_and_other_users\n27. monitoring_compliance_and_actions_taken_including_tss\n28. correct_format_for_description_of_proposed_system_gpsr_psr\n29. remarks\n\nWhen writing the \"Column Decisions\" section, use the exact aspect names above.\n\nPay particular attention to:\n- whether the need and justification for the proposed scheme or routeing measure are clearly supported;\n- whether the preferred proposal is convincingly explained;\n- whether incident history, impact, and applicability are evidenced;\n- whether chart details, chartlet, location, and positional information are complete;\n- whether existing traffic patterns, aids to navigation, and traffic information support the proposal;\n- whether hydrographic support is sufficient;\n- whether alternatives are addressed;\n- whether offshore structures, environmental factors, ports, harbours, and fishing activities are considered;\n- whether the proposal is limited to what\
+            \ is essential;\n- whether services, consultation, and compliance monitoring are adequately addressed;\n- whether the system description format appears correct.\n\nAdditional mandatory rules for this node:\n1. This is an approval-conclusion table.\n2. Except for document_proponent and remarks, every downstream table cell must be a mark only.\n3. The only allowed final marks are:\n   ✓\n   N/A\n   U1, U2, U3, ...\n4. Use \"✓\" only when the aspect is explicitly addressed and clearly acceptable without review concern.\n5. Use \"N/A\" when the aspect is not mentioned.\n6. Use \"U1\", \"U2\", \"U3\", ... when the aspect is mentioned but unclear, insufficient, inconsistent, unsupported, or otherwise problematic.\n7. Do not use bare \"U\".\n8. Do not use \"✓1\".\n9. Do not use \"-\".\n10. Do not use empty string \"\".\n11. Every \"Un\" must have a footnote draft.\n12. Footnote numbers must increase in the order of first appearance following the table aspect order.\n13. If the same\
+            \ reviewer concern applies to multiple aspects, reuse the same footnote number.\n14. Footnote Draft must be a concise reviewer conclusion sentence suitable for placement below the table.\n15. Do not place descriptive summaries into future table cells.\n\nIf the subtitle is visible, preserve its wording as closely as possible in your discussion.\nIf remarks are visible, keep them separate from footnotes.\n\nInput context:\n\n[Extracted document text]\n{{#1774943864283.text#}}\n\n[PDF page images or page-image-derived content]\n{{#1775705579726.files#}}\n\n[Knowledge retrieval result]\n{{#context#}}"
         selected: false
         structured_output:
           schema:
@@ -2407,8 +1889,7 @@ workflow:
 
             Your only task is:
 
-            Convert the approval-conclusion memo produced by the upstream review node
-            into one strict, valid, directly parseable JSON object.
+            Convert the approval-conclusion memo produced by the upstream review node into one strict, valid, directly parseable JSON object.
 
 
             This node is a pure structuring node.
@@ -2442,8 +1923,7 @@ workflow:
 
             2. Do not output anything other than JSON.
 
-            3. Do not output Markdown, code fences, explanations, comments, introductions,
-            or summaries.
+            3. Do not output Markdown, code fences, explanations, comments, introductions, or summaries.
 
             4. All field names must use double quotes.
 
@@ -2451,16 +1931,13 @@ workflow:
 
             6. Do not use trailing commas.
 
-            7. Do not invent facts, marks, footnotes, remarks, titles, subtitles,
-            or row values.
+            7. Do not invent facts, marks, footnotes, remarks, titles, subtitles, or row values.
 
-            8. If the approval-conclusion memo does not provide a value for a text
-            field, use "".
+            8. If the approval-conclusion memo does not provide a value for a text field, use "".
 
             9. Preserve the exact final mark stated in the memo whenever possible.
 
-            10. Preserve footnote numbering exactly as stated in the memo whenever
-            possible.
+            10. Preserve footnote numbering exactly as stated in the memo whenever possible.
 
 
             Critical structuring rule:
@@ -2514,8 +1991,7 @@ workflow:
 
             - "N/A" = not mentioned
 
-            - "Un" = mentioned, but unclear, insufficient, inconsistent, unsupported,
-            or otherwise problematic, with reviewer footnote n
+            - "Un" = mentioned, but unclear, insufficient, inconsistent, unsupported, or otherwise problematic, with reviewer footnote n
 
 
             Footnote rules:
@@ -2526,13 +2002,11 @@ workflow:
 
             3. Do not rewrite footnotes into evidence summaries.
 
-            4. If the memo clearly says that multiple aspects reuse the same footnote,
-            preserve that reuse.
+            4. If the memo clearly says that multiple aspects reuse the same footnote, preserve that reuse.
 
             5. Remove any footnote not referenced by a "Un" mark.
 
-            6. Keep footnote numbering exactly as already determined by the upstream
-            memo.
+            6. Keep footnote numbering exactly as already determined by the upstream memo.
 
             7. Do not renumber unless the upstream memo is internally inconsistent.
 
@@ -2541,8 +2015,7 @@ workflow:
 
             - document / document_proponent: short row label only
 
-            - remarks: only the final Remarks-column content or concise row context
-            stated in the memo
+            - remarks: only the final Remarks-column content or concise row context stated in the memo
 
             - do not place footnote text into remarks
 
@@ -2557,8 +2030,7 @@ workflow:
 
             3. Do not merge rows.
 
-            4. Do not split one row into multiple rows unless the upstream memo explicitly
-            indicates multiple rows.
+            4. Do not split one row into multiple rows unless the upstream memo explicitly indicates multiple rows.
 
 
             Missing-information rule:
@@ -2567,8 +2039,7 @@ workflow:
 
             - For judgment fields: do not invent a mark.
 
-            - If the memo is incomplete for a judgment field, copy the most conservative
-            explicit value from the memo only.
+            - If the memo is incomplete for a judgment field, copy the most conservative explicit value from the memo only.
 
             - Do not infer from outside evidence.
 
@@ -2577,255 +2048,24 @@ workflow:
 
             - Follow the exact fixed structure requested by the user prompt.
 
-            - If the user prompt allows blank subtitle and the memo does not clearly
-            provide one, output "".
+            - If the user prompt allows blank subtitle and the memo does not clearly provide one, output "".
 
 
             This node must be conservative:
 
-            If the memo is incomplete, preserve that incompleteness in the JSON rather
-            than making a new judgment.'
+            If the memo is incomplete, preserve that incompleteness in the JSON rather than making a new judgment.'
         - id: d14e56c8-688f-4ff2-bc76-1da81197a34d
           role: user
-          text: "Current target table type:\nTRAFFIC SEPARATION SCHEMES AND ROUTEING\
-            \ MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES\n\nYou must output JSON\
-            \ with exactly the following structure.\nDo not add fields.\nDo not remove\
-            \ fields.\nDo not rename fields.\n\n{\n  \"table_type\": \"proposed_ship_routeing_systems\"\
-            ,\n  \"title\": \"ANNEX\",\n  \"subtitle\": \"TRAFFIC SEPARATION SCHEMES\
-            \ AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES\",\n  \"\
-            column_order\": [\n    \"document_proponent\",\n    \"objectives\",\n\
-            \    \"demonstrated_need\",\n    \"reason_for_proposal_preferred\",\n\
-            \    \"history_of_incidents\",\n    \"applicability\",\n    \"impact_on_shipping\"\
-            ,\n    \"location_positions\",\n    \"reference_chart_details\",\n   \
-            \ \"chartlet_appropriate_one\",\n    \"cooperation_between_states\",\n\
-            \    \"following_existing_traffic_patterns\",\n    \"aids_to_navigation\"\
-            ,\n    \"information_on_traffic_patterns\",\n    \"hydrographic_surveys_and_charts_adequacy\"\
-            ,\n    \"alternative_measure\",\n    \"offshore_structures\",\n    \"\
-            environmental_factors\",\n    \"prevent_reduce_risk\",\n    \"sufficient_justification\"\
-            ,\n    \"adverse_effect_to_ports_and_harbours_including_tss\",\n    \"\
-            limited_to_what_is_essential\",\n    \"aids_or_services\",\n    \"fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\"\
-            ,\n    \"other_measures_taken\",\n    \"consultations_with_mariners_and_other_users\"\
-            ,\n    \"monitoring_compliance_and_actions_taken\",\n    \"correct_format_for_description_of_proposed_system_gpsr\"\
-            ,\n    \"adherence_to_other_guidance_only_if_observed_msc_1_circ_1060\"\
-            ,\n    \"remarks\"\n  ],\n  \"rows\": [\n    {\n      \"document_proponent\"\
-            : \"\",\n      \"objectives\": \"\",\n      \"demonstrated_need\": \"\"\
-            ,\n      \"reason_for_proposal_preferred\": \"\",\n      \"history_of_incidents\"\
-            : \"\",\n      \"applicability\": \"\",\n      \"impact_on_shipping\"\
-            : \"\",\n      \"location_positions\": \"\",\n      \"reference_chart_details\"\
-            : \"\",\n      \"chartlet_appropriate_one\": \"\",\n      \"cooperation_between_states\"\
-            : \"\",\n      \"following_existing_traffic_patterns\": \"\",\n      \"\
-            aids_to_navigation\": \"\",\n      \"information_on_traffic_patterns\"\
-            : \"\",\n      \"hydrographic_surveys_and_charts_adequacy\": \"\",\n \
-            \     \"alternative_measure\": \"\",\n      \"offshore_structures\": \"\
-            \",\n      \"environmental_factors\": \"\",\n      \"prevent_reduce_risk\"\
-            : \"\",\n      \"sufficient_justification\": \"\",\n      \"adverse_effect_to_ports_and_harbours_including_tss\"\
-            : \"\",\n      \"limited_to_what_is_essential\": \"\",\n      \"aids_or_services\"\
-            : \"\",\n      \"fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\"\
-            : \"\",\n      \"other_measures_taken\": \"\",\n      \"consultations_with_mariners_and_other_users\"\
-            : \"\",\n      \"monitoring_compliance_and_actions_taken\": \"\",\n  \
-            \    \"correct_format_for_description_of_proposed_system_gpsr\": \"\"\
-            ,\n      \"adherence_to_other_guidance_only_if_observed_msc_1_circ_1060\"\
-            : \"\",\n      \"remarks\": \"\"\n    }\n  ],\n  \"footnotes\": [\n  \
-            \  {\n      \"id\": \"\",\n      \"text\": \"\"\n    }\n  ]\n}\n\nAdditional\
-            \ mandatory rules:\n1. This is a pure structuring step.\n2. Use only the\
-            \ approval-conclusion memo as the source of truth.\n3. Do not make any\
-            \ new judgment.\n4. Except for \"document_proponent\" and \"remarks\"\
-            , every row field must contain marks only.\n5. The only allowed judgment-cell\
-            \ values are:\n   \"✓\"\n   \"N/A\"\n   \"U1\", \"U2\", \"U3\", ...\n\
-            6. Never place factual summaries, evidence, or reasoning text into judgment\
-            \ cells.\n7. If a \"Un\" mark appears in a row cell, there must be one\
-            \ corresponding footnote with id \"n\".\n8. Preserve footnote reuse exactly\
-            \ as indicated by the memo.\n9. Footnotes must contain concise reviewer\
-            \ conclusion text only.\n10. remarks must contain only the final Remarks-column\
-            \ content, never footnotes.\n11. If the memo does not clearly provide\
-            \ subtitle text beyond the fixed title logic, keep:\n   \"subtitle\":\
-            \ \"PROPOSED SHIP ROUTEING SYSTEMS\"\n12. Preserve every row identified\
-            \ in the memo.\n\nInput context:\n\n[Analysis result]\n{{#context#}}"
+          text: "Current target table type:\nTRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES\n\nYou must output JSON with exactly the following structure.\nDo not add fields.\nDo not remove fields.\nDo not rename fields.\n\n{\n  \"table_type\": \"traffic_separation_and_other_routeing_measures\",\n  \"title\": \"ANNEX\",\n  \"subtitle\": \"TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES\",\n  \"column_order\": [\n    \"document_proponent\",\n    \"objectives\",\n    \"demonstrated_need\",\n    \"reason_for_proposal_preferred\",\n    \"history_of_incidents\",\n    \"applicability\",\n    \"impact\",\n    \"location_positions\",\n    \"reference_chart_details\",\n    \"chartlet_appropriate_one\",\n    \"cooperation_between_states\",\n    \"following_existing_traffic_patterns\",\n    \"aids_to_navigation\",\n    \"information_on_traffic_patterns\",\n    \"hydrographic_surveys_and_charts_adequacy\",\n    \"alternative_measures\"\
+            ,\n    \"offshore_structures\",\n    \"environmental_factors\",\n    \"prevent_reduce_risk\",\n    \"sufficient_justification\",\n    \"adverse_effect_to_ports_and_harbours_including_pts\",\n    \"limited_to_what_is_essential\",\n    \"availability_aids_or_services\",\n    \"fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\",\n    \"other_measures_taken\",\n    \"consultations_with_mariners_and_other_users\",\n    \"monitoring_compliance_and_actions_taken_including_tss\",\n    \"correct_format_for_description_of_proposed_system_gpsr_psr\",\n    \"remarks\"\n  ],\n  \"rows\": [\n    {\n      \"document_proponent\": \"\",\n      \"objectives\": \"\",\n      \"demonstrated_need\": \"\",\n      \"reason_for_proposal_preferred\": \"\",\n      \"history_of_incidents\": \"\",\n      \"applicability\": \"\",\n      \"impact\": \"\",\n      \"location_positions\": \"\",\n      \"reference_chart_details\": \"\",\n      \"chartlet_appropriate_one\": \"\",\n      \"cooperation_between_states\"\
+            : \"\",\n      \"following_existing_traffic_patterns\": \"\",\n      \"aids_to_navigation\": \"\",\n      \"information_on_traffic_patterns\": \"\",\n      \"hydrographic_surveys_and_charts_adequacy\": \"\",\n      \"alternative_measures\": \"\",\n      \"offshore_structures\": \"\",\n      \"environmental_factors\": \"\",\n      \"prevent_reduce_risk\": \"\",\n      \"sufficient_justification\": \"\",\n      \"adverse_effect_to_ports_and_harbours_including_pts\": \"\",\n      \"limited_to_what_is_essential\": \"\",\n      \"availability_aids_or_services\": \"\",\n      \"fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\": \"\",\n      \"other_measures_taken\": \"\",\n      \"consultations_with_mariners_and_other_users\": \"\",\n      \"monitoring_compliance_and_actions_taken_including_tss\": \"\",\n      \"correct_format_for_description_of_proposed_system_gpsr_psr\": \"\",\n      \"remarks\": \"\"\n    }\n  ],\n  \"footnotes\": [\n    {\n      \"id\": \"\"\
+            ,\n      \"text\": \"\"\n    }\n  ]\n}\n\nAdditional mandatory rules:\n1. This is a pure structuring step.\n2. Use only the approval-conclusion memo as the source of truth.\n3. Do not make any new judgment.\n4. Except for \"document_proponent\" and \"remarks\", every row field must contain marks only.\n5. The only allowed judgment-cell values are:\n   \"✓\"\n   \"N/A\"\n   \"U1\", \"U2\", \"U3\", ...\n6. Never place factual summaries, evidence, or reasoning text into judgment cells.\n7. If a \"Un\" mark appears in a row cell, there must be one corresponding footnote with id \"n\".\n8. Preserve footnote reuse exactly as indicated by the memo.\n9. Footnotes must contain concise reviewer conclusion text only.\n10. remarks must contain only the final Remarks-column content, never footnotes.\n11. If the memo does not clearly provide subtitle text beyond the fixed title logic, keep:\n   \"subtitle\": \"TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES\"\
+            \n12. Preserve every row identified in the memo.\n\nInput context:\n\n[Analysis result]\n{{#context#}}"
         selected: false
         structured_output:
           schema:
+            type: object
             additionalProperties: false
-            properties:
-              column_order:
-                items:
-                  enum:
-                  - document_proponent
-                  - objectives
-                  - demonstrated_need
-                  - reason_for_proposal_preferred
-                  - history_of_incidents
-                  - applicability
-                  - impact_on_shipping
-                  - location_positions
-                  - reference_chart_details
-                  - chartlet_appropriate_one
-                  - cooperation_between_states
-                  - following_existing_traffic_patterns
-                  - aids_to_navigation
-                  - information_on_traffic_patterns
-                  - hydrographic_surveys_and_charts_adequacy
-                  - alternative_measure
-                  - offshore_structures
-                  - environmental_factors
-                  - prevent_reduce_risk
-                  - sufficient_justification
-                  - adverse_effect_to_ports_and_harbours_including_tss
-                  - limited_to_what_is_essential
-                  - aids_or_services
-                  - fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern
-                  - other_measures_taken
-                  - consultations_with_mariners_and_other_users
-                  - monitoring_compliance_and_actions_taken
-                  - correct_format_for_description_of_proposed_system_gpsr
-                  - adherence_to_other_guidance_only_if_observed_msc_1_circ_1060
-                  - remarks
-                  type: string
-                type: array
-              footnotes:
-                items:
-                  additionalProperties: false
-                  properties:
-                    id:
-                      type: string
-                    text:
-                      type: string
-                  required:
-                  - id
-                  - text
-                  type: object
-                type: array
-              rows:
-                items:
-                  additionalProperties: false
-                  properties:
-                    adherence_to_other_guidance_only_if_observed_msc_1_circ_1060:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    adverse_effect_to_ports_and_harbours_including_tss:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    aids_or_services:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    aids_to_navigation:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    alternative_measure:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    applicability:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    chartlet_appropriate_one:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    consultations_with_mariners_and_other_users:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    cooperation_between_states:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    correct_format_for_description_of_proposed_system_gpsr:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    demonstrated_need:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    document_proponent:
-                      type: string
-                    environmental_factors:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    following_existing_traffic_patterns:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    history_of_incidents:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    hydrographic_surveys_and_charts_adequacy:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    impact_on_shipping:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    information_on_traffic_patterns:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    limited_to_what_is_essential:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    location_positions:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    monitoring_compliance_and_actions_taken:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    objectives:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    offshore_structures:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    other_measures_taken:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    prevent_reduce_risk:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    reason_for_proposal_preferred:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    reference_chart_details:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                    remarks:
-                      type: string
-                    sufficient_justification:
-                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
-                      type: string
-                  required:
-                  - document_proponent
-                  - objectives
-                  - demonstrated_need
-                  - reason_for_proposal_preferred
-                  - history_of_incidents
-                  - applicability
-                  - impact_on_shipping
-                  - location_positions
-                  - reference_chart_details
-                  - chartlet_appropriate_one
-                  - cooperation_between_states
-                  - following_existing_traffic_patterns
-                  - aids_to_navigation
-                  - information_on_traffic_patterns
-                  - hydrographic_surveys_and_charts_adequacy
-                  - alternative_measure
-                  - offshore_structures
-                  - environmental_factors
-                  - prevent_reduce_risk
-                  - sufficient_justification
-                  - adverse_effect_to_ports_and_harbours_including_tss
-                  - limited_to_what_is_essential
-                  - aids_or_services
-                  - fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern
-                  - other_measures_taken
-                  - consultations_with_mariners_and_other_users
-                  - monitoring_compliance_and_actions_taken
-                  - correct_format_for_description_of_proposed_system_gpsr
-                  - adherence_to_other_guidance_only_if_observed_msc_1_circ_1060
-                  - remarks
-                  type: object
-                type: array
-              subtitle:
-                type: string
-              table_type:
-                const: proposed_ship_routeing_systems
-                type: string
-              title:
-                type: string
             required:
             - table_type
             - title
@@ -2833,7 +2073,182 @@ workflow:
             - column_order
             - rows
             - footnotes
-            type: object
+            properties:
+              table_type:
+                type: string
+                const: traffic_separation_and_other_routeing_measures
+              title:
+                type: string
+              subtitle:
+                type: string
+              column_order:
+                type: array
+                items:
+                  type: string
+                  enum:
+                  - document_proponent
+                  - objectives
+                  - demonstrated_need
+                  - reason_for_proposal_preferred
+                  - history_of_incidents
+                  - applicability
+                  - impact
+                  - location_positions
+                  - reference_chart_details
+                  - chartlet_appropriate_one
+                  - cooperation_between_states
+                  - following_existing_traffic_patterns
+                  - aids_to_navigation
+                  - information_on_traffic_patterns
+                  - hydrographic_surveys_and_charts_adequacy
+                  - alternative_measures
+                  - offshore_structures
+                  - environmental_factors
+                  - prevent_reduce_risk
+                  - sufficient_justification
+                  - adverse_effect_to_ports_and_harbours_including_pts
+                  - limited_to_what_is_essential
+                  - availability_aids_or_services
+                  - fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern
+                  - other_measures_taken
+                  - consultations_with_mariners_and_other_users
+                  - monitoring_compliance_and_actions_taken_including_tss
+                  - correct_format_for_description_of_proposed_system_gpsr_psr
+                  - remarks
+              rows:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                  - document_proponent
+                  - objectives
+                  - demonstrated_need
+                  - reason_for_proposal_preferred
+                  - history_of_incidents
+                  - applicability
+                  - impact
+                  - location_positions
+                  - reference_chart_details
+                  - chartlet_appropriate_one
+                  - cooperation_between_states
+                  - following_existing_traffic_patterns
+                  - aids_to_navigation
+                  - information_on_traffic_patterns
+                  - hydrographic_surveys_and_charts_adequacy
+                  - alternative_measures
+                  - offshore_structures
+                  - environmental_factors
+                  - prevent_reduce_risk
+                  - sufficient_justification
+                  - adverse_effect_to_ports_and_harbours_including_pts
+                  - limited_to_what_is_essential
+                  - availability_aids_or_services
+                  - fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern
+                  - other_measures_taken
+                  - consultations_with_mariners_and_other_users
+                  - monitoring_compliance_and_actions_taken_including_tss
+                  - correct_format_for_description_of_proposed_system_gpsr_psr
+                  - remarks
+                  properties:
+                    document_proponent:
+                      type: string
+                    objectives:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    demonstrated_need:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    reason_for_proposal_preferred:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    history_of_incidents:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    applicability:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    impact:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    location_positions:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    reference_chart_details:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    chartlet_appropriate_one:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    cooperation_between_states:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    following_existing_traffic_patterns:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    aids_to_navigation:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    information_on_traffic_patterns:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    hydrographic_surveys_and_charts_adequacy:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    alternative_measures:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    offshore_structures:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    environmental_factors:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    prevent_reduce_risk:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    sufficient_justification:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    adverse_effect_to_ports_and_harbours_including_pts:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    limited_to_what_is_essential:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    availability_aids_or_services:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    other_measures_taken:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    consultations_with_mariners_and_other_users:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    monitoring_compliance_and_actions_taken_including_tss:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    correct_format_for_description_of_proposed_system_gpsr_psr:
+                      type: string
+                      pattern: ^(✓|N/A|U[1-9][0-9]*)$
+                    remarks:
+                      type: string
+              footnotes:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                  - id
+                  - text
+                  properties:
+                    id:
+                      type: string
+                    text:
+                      type: string
         structured_output_enabled: true
         title: JSON Structurer 3
         type: llm
@@ -2853,69 +2268,11 @@ workflow:
       type: custom
       width: 242
     - data:
-        code: "import json\nimport re\nfrom typing import Any, Dict, List\n\n\nALLOWED_MARK_RE\
-          \ = re.compile(r\"^(✓|N/A|U[1-9]\\d*)$\")\n\n\ndef parse_input(data: Any)\
-          \ -> Dict[str, Any]:\n    if isinstance(data, dict):\n        return data\n\
-          \    if isinstance(data, str):\n        data = data.strip()\n        if\
-          \ not data:\n            return {}\n        return json.loads(data)\n  \
-          \  raise ValueError(\"structured_json must be a JSON string or dict\")\n\
-          \n\ndef s(value: Any) -> str:\n    return \"\" if value is None else str(value).strip()\n\
-          \n\ndef normalize_text(value: Any) -> str:\n    return s(value)\n\n\ndef\
-          \ normalize_mark(value: Any, field_name: str) -> Any:\n    text = s(value)\n\
-          \n    if text == \"√\":\n        text = \"✓\"\n\n    if not text:\n    \
-          \    raise ValueError(f\"Judgement cell '{field_name}' is empty. Allowed\
-          \ values: ✓ / N/A / U1, U2, ...\")\n\n    if not ALLOWED_MARK_RE.match(text):\n\
-          \        raise ValueError(\n            f\"Invalid judgement mark in '{field_name}':\
-          \ {text}. \"\n            \"Allowed values: ✓ / N/A / U1, U2, ...\"\n  \
-          \      )\n\n    m = re.match(r\"^U([1-9]\\d*)$\", text)\n    if m:\n   \
-          \     return {\n            \"symbol\": \"U\",\n            \"footnote_ref\"\
-          : m.group(1),\n            \"display\": text\n        }\n\n    return text\n\
-          \n\ndef clean_issue_text(text: Any) -> str:\n    return s(text)\n\n\ndef\
-          \ extract_issues(data: Dict[str, Any]) -> List[str]:\n    issues: List[str]\
-          \ = []\n    used_ids = set()\n\n    for item in data.get(\"footnotes\",\
-          \ []) or []:\n        if not isinstance(item, dict):\n            continue\n\
-          \        fid = s(item.get(\"id\"))\n        txt = clean_issue_text(item.get(\"\
-          text\"))\n        if not fid or not txt:\n            continue\n       \
-          \ if fid in used_ids:\n            continue\n        used_ids.add(fid)\n\
-          \        issues.append(txt)\n\n    return issues\n\n\ndef main(structured_json:\
-          \ Any) -> Dict[str, Any]:\n    data = parse_input(structured_json)\n   \
-          \ rows = data.get(\"rows\", []) or []\n    row = rows[0] if rows else {}\n\
-          \n    field_map = {\n        \"objectives\": \"objectives_cell\",\n    \
-          \    \"demonstrated_need\": \"demonstrated_need_cell\",\n        \"reason_for_proposal_preferred\"\
-          : \"Reason_for_proposal_preferred_cell\",\n        \"history_of_incidents\"\
-          : \"history_of_incidents_cell\",\n        \"applicability\": \"applicability_cell\"\
-          ,\n        \"impact_on_shipping\": \"impact_on_shipping_cell\",\n      \
-          \  \"location_positions\": \"location_cell\",\n        \"reference_chart_details\"\
-          : \"reference_chart_details_cell\",\n        \"chartlet_appropriate_one\"\
-          : \"chartlet_cell\",\n        \"cooperation_between_states\": \"cooperation_between_states_cell\"\
-          ,\n        \"following_existing_traffic_patterns\": \"following_existing_traffic_patterns_cell\"\
-          ,\n        \"aids_to_navigation\": \"aids_to_navigation_cell\",\n      \
-          \  \"information_on_traffic_patterns\": \"information_on_traffic_patterns_cell\"\
-          ,\n        \"hydrographic_surveys_and_charts_adequacy\": \"surveys_and_charts_cell\"\
-          ,\n        \"alternative_measure\": \"alternative_measure_cell\",\n    \
-          \    \"offshore_structures\": \"offshore_structures_cell\",\n        \"\
-          environmental_factors\": \"environmental_factors_cell\",\n        \"prevent_reduce_risk\"\
-          : \"risk_cell\",\n        \"sufficient_justification\": \"sufficient_justification_cell\"\
-          ,\n        \"adverse_effect_to_ports_and_harbours_including_tss\": \"adverse_effect_cell\"\
-          ,\n        \"limited_to_what_is_essential\": \"essential_limit_cell\",\n\
-          \        \"aids_or_services\": \"aids_or_services_cell\",\n        \"fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\"\
-          : \"changes_in_traffic_pattern_cell\",\n        \"other_measures_taken\"\
-          : \"other_measures_taken_cell\",\n        \"consultations_with_mariners_and_other_users\"\
-          : \"consultations_cell\",\n        \"monitoring_compliance_and_actions_taken\"\
-          : \"monitoring_compliance_and_actions_taken_cell\",\n        \"correct_format_for_description_of_proposed_system_gpsr\"\
-          : \"correct_format_Cell\",\n        \"adherence_to_other_guidance_only_if_observed_msc_1_circ_1060\"\
-          : \"adherence_cell\"\n    }\n\n    named_cells = {\n        \"title_cell\"\
-          : normalize_text(data.get(\"title\")),\n        \"subtitle_cell\": normalize_text(data.get(\"\
-          subtitle\")),\n        \"document_label_cell\": normalize_text(row.get(\"\
-          document_proponent\")),\n        \"context_description_cell\": normalize_text(row.get(\"\
-          remarks\"))\n    }\n\n    for src_key, target_name in field_map.items():\n\
-          \        named_cells[target_name] = normalize_mark(row.get(src_key), src_key)\n\
-          \n    payload = {\n        \"named_cells\": named_cells,\n        \"issues\"\
-          : extract_issues(data),\n        \"output_filename\": \"proposed_ship_routeing_systems_result\"\
-          \n    }\n\n    return {\n        \"payload_json\": json.dumps(payload, ensure_ascii=False),\n\
-          \        \"builtin_template_key\": \"proposed_ship_routeing_systems\",\n\
-          \        \"document_label\": normalize_text(row.get(\"document_proponent\"\
-          )),\n        \"issue_count\": len(payload[\"issues\"])\n    }"
+        code: "import json\nimport re\nfrom typing import Any, Dict, List\n\n\nALLOWED_MARK_RE = re.compile(r\"^(✓|N/A|U[1-9]\\d*)$\")\n\n\ndef parse_input(data: Any) -> Dict[str, Any]:\n    if isinstance(data, dict):\n        return data\n    if isinstance(data, str):\n        data = data.strip()\n        if not data:\n            return {}\n        return json.loads(data)\n    raise ValueError(\"structured_json must be a JSON string or dict\")\n\n\ndef s(value: Any) -> str:\n    return \"\" if value is None else str(value).strip()\n\n\ndef normalize_text(value: Any) -> str:\n    return s(value)\n\n\ndef normalize_mark(value: Any, field_name: str) -> Any:\n    text = s(value)\n\n    if text == \"√\":\n        text = \"✓\"\n\n    if not text:\n        raise ValueError(f\"Judgement cell '{field_name}' is empty. Allowed values: ✓ / N/A / U1, U2, ...\")\n\n    if not ALLOWED_MARK_RE.match(text):\n        raise ValueError(\n            f\"Invalid judgement mark in '{field_name}': {text}. \"\n\
+          \            \"Allowed values: ✓ / N/A / U1, U2, ...\"\n        )\n\n    m = re.match(r\"^U([1-9]\\d*)$\", text)\n    if m:\n        return {\n            \"symbol\": \"U\",\n            \"footnote_ref\": m.group(1),\n            \"display\": text\n        }\n\n    return text\n\n\ndef clean_issue_text(text: Any) -> str:\n    return s(text)\n\n\ndef extract_issues(data: Dict[str, Any]) -> List[str]:\n    issues: List[str] = []\n    used_ids = set()\n\n    for item in data.get(\"footnotes\", []) or []:\n        if not isinstance(item, dict):\n            continue\n        fid = s(item.get(\"id\"))\n        txt = clean_issue_text(item.get(\"text\"))\n        if not fid or not txt:\n            continue\n        if fid in used_ids:\n            continue\n        used_ids.add(fid)\n        issues.append(txt)\n\n    return issues\n\n\ndef main(structured_json: Any) -> Dict[str, Any]:\n    data = parse_input(structured_json)\n    rows = data.get(\"rows\", []) or []\n    row = rows[0]\
+          \ if rows else {}\n\n    field_map = {\n        \"objectives\": \"objectives_cell\",\n        \"demonstrated_need\": \"demonstrated_need_cell\",\n        \"reason_for_proposal_preferred\": \"Reason_for_proposal_preferred_cell\",\n        \"history_of_incidents\": \"history_of_incidents_cell\",\n        \"applicability\": \"applicability_cell\",\n        \"impact_on_shipping\": \"impact_on_shipping_cell\",\n        \"location_positions\": \"location_cell\",\n        \"reference_chart_details\": \"reference_chart_details_cell\",\n        \"chartlet_appropriate_one\": \"chartlet_cell\",\n        \"cooperation_between_states\": \"cooperation_between_states_cell\",\n        \"following_existing_traffic_patterns\": \"following_existing_traffic_patterns_cell\",\n        \"aids_to_navigation\": \"aids_to_navigation_cell\",\n        \"information_on_traffic_patterns\": \"information_on_traffic_patterns_cell\",\n        \"hydrographic_surveys_and_charts_adequacy\": \"surveys_and_charts_cell\"\
+          ,\n        \"alternative_measure\": \"alternative_measure_cell\",\n        \"offshore_structures\": \"offshore_structures_cell\",\n        \"environmental_factors\": \"environmental_factors_cell\",\n        \"prevent_reduce_risk\": \"risk_cell\",\n        \"sufficient_justification\": \"sufficient_justification_cell\",\n        \"adverse_effect_to_ports_and_harbours_including_tss\": \"adverse_effect_cell\",\n        \"limited_to_what_is_essential\": \"essential_limit_cell\",\n        \"aids_or_services\": \"aids_or_services_cell\",\n        \"fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\": \"changes_in_traffic_pattern_cell\",\n        \"other_measures_taken\": \"other_measures_taken_cell\",\n        \"consultations_with_mariners_and_other_users\": \"consultations_cell\",\n        \"monitoring_compliance_and_actions_taken\": \"monitoring_compliance_and_actions_taken_cell\",\n        \"correct_format_for_description_of_proposed_system_gpsr\": \"correct_format_Cell\"\
+          ,\n        \"adherence_to_other_guidance_only_if_observed_msc_1_circ_1060\": \"adherence_cell\"\n    }\n\n    named_cells = {\n        \"document_label_cell\": normalize_text(row.get(\"document_proponent\")),\n        \"context_description_cell\": normalize_text(row.get(\"remarks\"))\n    }\n\n    for src_key, target_name in field_map.items():\n        named_cells[target_name] = normalize_mark(row.get(src_key), src_key)\n\n    payload = {\n        \"named_cells\": named_cells,\n        \"issues\": extract_issues(data),\n        \"output_filename\": \"proposed_ship_routeing_systems_result\"\n    }\n\n    return {\n        \"payload_json\": json.dumps(payload, ensure_ascii=False),\n        \"builtin_template_key\": \"proposed_ship_routeing_systems\",\n        \"document_label\": normalize_text(row.get(\"document_proponent\")),\n        \"issue_count\": len(payload[\"issues\"])\n    }"
         code_language: python3
         outputs:
           builtin_template_key:
@@ -2953,69 +2310,11 @@ workflow:
       type: custom
       width: 242
     - data:
-        code: "import json\nimport re\nfrom typing import Any, Dict, List\n\n\nALLOWED_MARK_RE\
-          \ = re.compile(r\"^(✓|N/A|U[1-9]\\d*)$\")\n\n\ndef parse_input(data: Any)\
-          \ -> Dict[str, Any]:\n    if isinstance(data, dict):\n        return data\n\
-          \    if isinstance(data, str):\n        data = data.strip()\n        if\
-          \ not data:\n            return {}\n        return json.loads(data)\n  \
-          \  raise ValueError(\"structured_json must be a JSON string or dict\")\n\
-          \n\ndef s(value: Any) -> str:\n    return \"\" if value is None else str(value).strip()\n\
-          \n\ndef normalize_text(value: Any) -> str:\n    return s(value)\n\n\ndef\
-          \ normalize_mark(value: Any, field_name: str) -> Any:\n    text = s(value)\n\
-          \n    if text == \"√\":\n        text = \"✓\"\n\n    if not text:\n    \
-          \    raise ValueError(f\"Judgement cell '{field_name}' is empty. Allowed\
-          \ values: ✓ / N/A / U1, U2, ...\")\n\n    if not ALLOWED_MARK_RE.match(text):\n\
-          \        raise ValueError(\n            f\"Invalid judgement mark in '{field_name}':\
-          \ {text}. \"\n            \"Allowed values: ✓ / N/A / U1, U2, ...\"\n  \
-          \      )\n\n    m = re.match(r\"^U([1-9]\\d*)$\", text)\n    if m:\n   \
-          \     return {\n            \"symbol\": \"U\",\n            \"footnote_ref\"\
-          : m.group(1),\n            \"display\": text\n        }\n\n    return text\n\
-          \n\ndef clean_issue_text(text: Any) -> str:\n    return s(text)\n\n\ndef\
-          \ extract_issues(data: Dict[str, Any]) -> List[str]:\n    issues: List[str]\
-          \ = []\n    used_ids = set()\n\n    for item in data.get(\"footnotes\",\
-          \ []) or []:\n        if not isinstance(item, dict):\n            continue\n\
-          \        fid = s(item.get(\"id\"))\n        txt = clean_issue_text(item.get(\"\
-          text\"))\n        if not fid or not txt:\n            continue\n       \
-          \ if fid in used_ids:\n            continue\n        used_ids.add(fid)\n\
-          \        issues.append(txt)\n\n    return issues\n\n\ndef main(structured_json:\
-          \ Any) -> Dict[str, Any]:\n    data = parse_input(structured_json)\n   \
-          \ rows = data.get(\"rows\", []) or []\n    row = rows[0] if rows else {}\n\
-          \n    field_map = {\n        \"objectives\": \"objectives_cell\",\n    \
-          \    \"demonstrated_need\": \"demonstrated_need_cell\",\n        \"reason_for_proposal_preferred\"\
-          : \"Reason_for_proposal_preferred_cell\",\n        \"history_of_incidents\"\
-          : \"history_of_incidents_cell\",\n        \"applicability\": \"applicability_cell\"\
-          ,\n        \"impact_on_shipping\": \"impact_on_shipping_cell\",\n      \
-          \  \"location_positions\": \"location_cell\",\n        \"reference_chart_details\"\
-          : \"reference_chart_details_cell\",\n        \"chartlet_appropriate_one\"\
-          : \"chartlet_cell\",\n        \"cooperation_between_states\": \"cooperation_between_states_cell\"\
-          ,\n        \"following_existing_traffic_patterns\": \"following_existing_traffic_patterns_cell\"\
-          ,\n        \"aids_to_navigation\": \"aids_to_navigation_cell\",\n      \
-          \  \"information_on_traffic_patterns\": \"information_on_traffic_patterns_cell\"\
-          ,\n        \"hydrographic_surveys_and_charts_adequacy\": \"surveys_and_charts_cell\"\
-          ,\n        \"alternative_measure\": \"alternative_measure_cell\",\n    \
-          \    \"offshore_structures\": \"offshore_structures_cell\",\n        \"\
-          environmental_factors\": \"environmental_factors_cell\",\n        \"prevent_reduce_risk\"\
-          : \"risk_cell\",\n        \"sufficient_justification\": \"sufficient_justification_cell\"\
-          ,\n        \"adverse_effect_to_ports_and_harbours_including_tss\": \"adverse_effect_cell\"\
-          ,\n        \"limited_to_what_is_essential\": \"essential_limit_cell\",\n\
-          \        \"aids_or_services\": \"aids_or_services_cell\",\n        \"fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\"\
-          : \"changes_in_traffic_pattern_cell\",\n        \"other_measures_taken\"\
-          : \"other_measures_taken_cell\",\n        \"consultations_with_mariners_and_other_users\"\
-          : \"consultations_cell\",\n        \"monitoring_compliance_and_actions_taken\"\
-          : \"monitoring_compliance_and_actions_taken_cell\",\n        \"correct_format_for_description_of_proposed_system_gpsr\"\
-          : \"correct_format_Cell\",\n        \"adherence_to_other_guidance_only_if_observed_msc_1_circ_1060\"\
-          : \"adherence_cell\"\n    }\n\n    named_cells = {\n        \"title_cell\"\
-          : normalize_text(data.get(\"title\")),\n        \"subtitle_cell\": normalize_text(data.get(\"\
-          subtitle\")),\n        \"document_label_cell\": normalize_text(row.get(\"\
-          document_proponent\")),\n        \"context_description_cell\": normalize_text(row.get(\"\
-          remarks\"))\n    }\n\n    for src_key, target_name in field_map.items():\n\
-          \        named_cells[target_name] = normalize_mark(row.get(src_key), src_key)\n\
-          \n    payload = {\n        \"named_cells\": named_cells,\n        \"issues\"\
-          : extract_issues(data),\n        \"output_filename\": \"proposed_ship_routeing_systems_result\"\
-          \n    }\n\n    return {\n        \"payload_json\": json.dumps(payload, ensure_ascii=False),\n\
-          \        \"builtin_template_key\": \"proposed_ship_routeing_systems\",\n\
-          \        \"document_label\": normalize_text(row.get(\"document_proponent\"\
-          )),\n        \"issue_count\": len(payload[\"issues\"])\n    }"
+        code: "import json\nimport re\nfrom typing import Any, Dict, List\n\n\nALLOWED_MARK_RE = re.compile(r\"^(✓|N/A|U[1-9]\\d*)$\")\n\n\ndef parse_input(data: Any) -> Dict[str, Any]:\n    if isinstance(data, dict):\n        return data\n    if isinstance(data, str):\n        data = data.strip()\n        if not data:\n            return {}\n        return json.loads(data)\n    raise ValueError(\"structured_json must be a JSON string or dict\")\n\n\ndef s(value: Any) -> str:\n    return \"\" if value is None else str(value).strip()\n\n\ndef normalize_mark(value: Any, field_name: str) -> Any:\n    text = s(value)\n\n    if text == \"√\":\n        text = \"✓\"\n\n    if not text:\n        raise ValueError(f\"Judgement cell '{field_name}' is empty. Allowed values: ✓ / N/A / U1, U2, ...\")\n\n    if not ALLOWED_MARK_RE.match(text):\n        raise ValueError(\n            f\"Invalid judgement mark in '{field_name}': {text}. \"\n            \"Allowed values: ✓ / N/A / U1, U2, ...\"\n        )\n\
+          \n    m = re.match(r\"^U([1-9]\\d*)$\", text)\n    if m:\n        return {\n            \"symbol\": \"U\",\n            \"footnote_ref\": m.group(1),\n            \"display\": text\n        }\n\n    return text\n\n\ndef clean_issue_text(text: Any) -> str:\n    return s(text)\n\n\ndef extract_issues(data: Dict[str, Any]) -> List[str]:\n    issues: List[str] = []\n    used_ids = set()\n\n    for item in data.get(\"footnotes\", []) or []:\n        if not isinstance(item, dict):\n            continue\n        fid = s(item.get(\"id\"))\n        txt = clean_issue_text(item.get(\"text\"))\n        if not fid or not txt:\n            continue\n        if fid in used_ids:\n            continue\n        used_ids.add(fid)\n        issues.append(txt)\n\n    return issues\n\n\ndef main(structured_json: Any) -> Dict[str, Any]:\n    data = parse_input(structured_json)\n    rows = data.get(\"rows\", []) or []\n    row = rows[0] if rows else {}\n\n    field_map = {\n        \"objectives\": \"objectives_cell\"\
+          ,\n        \"demonstrated_need\": \"demonstrated_need_cell\",\n        \"reason_for_proposal_preferred\": \"Reason_for_proposal_preferred_cell\",\n        \"history_of_incidents\": \"history_of_incidents_cell\",\n        \"applicability\": \"applicability_cell\",\n        \"impact\": \"impact_on_shipping_cell\",\n        \"location_positions\": \"location_cell\",\n        \"reference_chart_details\": \"reference_chart_details_cell\",\n        \"chartlet_appropriate_one\": \"chartlet_cell\",\n        \"cooperation_between_states\": \"cooperation_between_states_cell\",\n        \"following_existing_traffic_patterns\": \"following_existing_traffic_patterns_cell\",\n        \"aids_to_navigation\": \"aids_to_navigation_cell\",\n        \"information_on_traffic_patterns\": \"information_on_traffic_patterns_cell\",\n        \"hydrographic_surveys_and_charts_adequacy\": \"surveys_and_charts_cell\",\n        \"alternative_measures\": \"alternative_measure_cell\",\n        \"offshore_structures\"\
+          : \"offshore_structures_cell\",\n        \"environmental_factors\": \"environmental_factors_cell\",\n        \"prevent_reduce_risk\": \"risk_cell\",\n        \"sufficient_justification\": \"sufficient_justification_cell\",\n        \"adverse_effect_to_ports_and_harbours_including_pts\": \"adverse_effect_cell\",\n        \"limited_to_what_is_essential\": \"essential_limit_cell\",\n        \"availability_aids_or_services\": \"aids_or_services_cell\",\n        \"fishing_ground_activities_and_foreseeable_changes_in_traffic_pattern\": \"changes_in_traffic_pattern_cell\",\n        \"other_measures_taken\": \"other_measures_taken_cell\",\n        \"consultations_with_mariners_and_other_users\": \"consultations_cell\",\n        \"monitoring_compliance_and_actions_taken_including_tss\": \"monitoring_compliance_and_actions_taken_cell\",\n        \"correct_format_for_description_of_proposed_system_gpsr_psr\": \"correct_format_Cell\"\n    }\n\n    named_cells = {\n        \"document_label_cell\"\
+          : s(row.get(\"document_proponent\")),\n        \"context_description_cell\": s(row.get(\"remarks\"))\n    }\n\n    for src_key, target_name in field_map.items():\n        named_cells[target_name] = normalize_mark(row.get(src_key), src_key)\n\n    payload = {\n        \"named_cells\": named_cells,\n        \"issues\": extract_issues(data),\n        \"output_filename\": \"traffic_separation_schemes_result\"\n    }\n\n    return {\n        \"payload_json\": json.dumps(payload, ensure_ascii=False),\n        \"builtin_template_key\": \"traffic_separation_schemes_and_routeing_measures_other_than_traffic_separation_schemes\",\n        \"document_label\": s(row.get(\"document_proponent\")),\n        \"issue_count\": len(payload[\"issues\"])\n    }\n"
         code_language: python3
         outputs:
           builtin_template_key:
@@ -3134,14 +2433,10 @@ workflow:
             value: proposed_ship_routeing_systems
           - icon: ''
             label:
-              en_US: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC
-                SEPARATION SCHEMES
-              ja_JP: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC
-                SEPARATION SCHEMES
-              pt_BR: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC
-                SEPARATION SCHEMES
-              zh_Hans: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN
-                TRAFFIC SEPARATION SCHEMES
+              en_US: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
+              ja_JP: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
+              pt_BR: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
+              zh_Hans: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
             value: traffic_separation_schemes_and_routeing_measures_other_than_traffic_separation_schemes
           placeholder: null
           precision: null
@@ -3201,12 +2496,9 @@ workflow:
           default: null
           form: llm
           human_description:
-            en_US: JSON payload containing named_cells, cells, placeholders, issues,
-              or output_filename.
-            ja_JP: JSON payload containing named_cells, cells, placeholders, issues,
-              or output_filename.
-            pt_BR: JSON payload containing named_cells, cells, placeholders, issues,
-              or output_filename.
+            en_US: JSON payload containing named_cells, cells, placeholders, issues, or output_filename.
+            ja_JP: JSON payload containing named_cells, cells, placeholders, issues, or output_filename.
+            pt_BR: JSON payload containing named_cells, cells, placeholders, issues, or output_filename.
             zh_Hans: 包含named_cells、cells、placeholders、issues或output_filename的JSON数据。
           label:
             en_US: Payload JSON
@@ -3252,12 +2544,9 @@ workflow:
           default: upload_link
           form: form
           human_description:
-            en_US: Choose whether to return a file blob or upload and return a download
-              link.
-            ja_JP: Choose whether to return a file blob or upload and return a download
-              link.
-            pt_BR: Choose whether to return a file blob or upload and return a download
-              link.
+            en_US: Choose whether to return a file blob or upload and return a download link.
+            ja_JP: Choose whether to return a file blob or upload and return a download link.
+            pt_BR: Choose whether to return a file blob or upload and return a download link.
             zh_Hans: 选择直接返回文件，或上传后返回下载链接。
           label:
             en_US: Delivery Mode
@@ -3428,14 +2717,10 @@ workflow:
             value: proposed_ship_routeing_systems
           - icon: ''
             label:
-              en_US: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC
-                SEPARATION SCHEMES
-              ja_JP: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC
-                SEPARATION SCHEMES
-              pt_BR: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC
-                SEPARATION SCHEMES
-              zh_Hans: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN
-                TRAFFIC SEPARATION SCHEMES
+              en_US: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
+              ja_JP: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
+              pt_BR: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
+              zh_Hans: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
             value: traffic_separation_schemes_and_routeing_measures_other_than_traffic_separation_schemes
           placeholder: null
           precision: null
@@ -3495,12 +2780,9 @@ workflow:
           default: null
           form: llm
           human_description:
-            en_US: JSON payload containing named_cells, cells, placeholders, issues,
-              or output_filename.
-            ja_JP: JSON payload containing named_cells, cells, placeholders, issues,
-              or output_filename.
-            pt_BR: JSON payload containing named_cells, cells, placeholders, issues,
-              or output_filename.
+            en_US: JSON payload containing named_cells, cells, placeholders, issues, or output_filename.
+            ja_JP: JSON payload containing named_cells, cells, placeholders, issues, or output_filename.
+            pt_BR: JSON payload containing named_cells, cells, placeholders, issues, or output_filename.
             zh_Hans: 包含named_cells、cells、placeholders、issues或output_filename的JSON数据。
           label:
             en_US: Payload JSON
@@ -3546,12 +2828,9 @@ workflow:
           default: upload_link
           form: form
           human_description:
-            en_US: Choose whether to return a file blob or upload and return a download
-              link.
-            ja_JP: Choose whether to return a file blob or upload and return a download
-              link.
-            pt_BR: Choose whether to return a file blob or upload and return a download
-              link.
+            en_US: Choose whether to return a file blob or upload and return a download link.
+            ja_JP: Choose whether to return a file blob or upload and return a download link.
+            pt_BR: Choose whether to return a file blob or upload and return a download link.
             zh_Hans: 选择直接返回文件，或上传后返回下载链接。
           label:
             en_US: Delivery Mode
@@ -3722,14 +3001,10 @@ workflow:
             value: proposed_ship_routeing_systems
           - icon: ''
             label:
-              en_US: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC
-                SEPARATION SCHEMES
-              ja_JP: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC
-                SEPARATION SCHEMES
-              pt_BR: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC
-                SEPARATION SCHEMES
-              zh_Hans: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN
-                TRAFFIC SEPARATION SCHEMES
+              en_US: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
+              ja_JP: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
+              pt_BR: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
+              zh_Hans: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
             value: traffic_separation_schemes_and_routeing_measures_other_than_traffic_separation_schemes
           placeholder: null
           precision: null
@@ -3789,12 +3064,9 @@ workflow:
           default: null
           form: llm
           human_description:
-            en_US: JSON payload containing named_cells, cells, placeholders, issues,
-              or output_filename.
-            ja_JP: JSON payload containing named_cells, cells, placeholders, issues,
-              or output_filename.
-            pt_BR: JSON payload containing named_cells, cells, placeholders, issues,
-              or output_filename.
+            en_US: JSON payload containing named_cells, cells, placeholders, issues, or output_filename.
+            ja_JP: JSON payload containing named_cells, cells, placeholders, issues, or output_filename.
+            pt_BR: JSON payload containing named_cells, cells, placeholders, issues, or output_filename.
             zh_Hans: 包含named_cells、cells、placeholders、issues或output_filename的JSON数据。
           label:
             en_US: Payload JSON
@@ -3840,12 +3112,9 @@ workflow:
           default: upload_link
           form: form
           human_description:
-            en_US: Choose whether to return a file blob or upload and return a download
-              link.
-            ja_JP: Choose whether to return a file blob or upload and return a download
-              link.
-            pt_BR: Choose whether to return a file blob or upload and return a download
-              link.
+            en_US: Choose whether to return a file blob or upload and return a download link.
+            ja_JP: Choose whether to return a file blob or upload and return a download link.
+            pt_BR: Choose whether to return a file blob or upload and return a download link.
             zh_Hans: 选择直接返回文件，或上传后返回下载链接。
           label:
             en_US: Delivery Mode
@@ -3952,11 +3221,7 @@ workflow:
 
             Your only task:
 
-            Read the extracted proposal text and output pure-text English retrieval
-            keywords and short search phrases that maximize the chance of hitting
-            the governing or directly relevant IMO resolution(s), circular(s), regulation
-            text, guidance documents, and previously adopted ships'' routeing documents
-            in the downstream knowledge base.
+            Read the extracted proposal text and output pure-text English retrieval keywords and short search phrases that maximize the chance of hitting the governing or directly relevant IMO resolution(s), circular(s), regulation text, guidance documents, and previously adopted ships'' routeing documents in the downstream knowledge base.
 
 
             This is NOT a summary task.
@@ -3973,8 +3238,7 @@ workflow:
 
             Main objective:
 
-            Output the most retrieval-effective pure-text search anchors for a ships''
-            routeing proposal or amendment.
+            Output the most retrieval-effective pure-text search anchors for a ships'' routeing proposal or amendment.
 
 
             Priority orientation:
@@ -4012,13 +3276,11 @@ workflow:
 
             1. Exact official references explicitly cited in the source text
 
-            2. Official title fragments likely to appear in IMO resolutions, circulars,
-            annex headings, and draft resolution headings
+            2. Official title fragments likely to appear in IMO resolutions, circulars, annex headings, and draft resolution headings
 
             3. Canonical IMO normative terms used in routeing instruments
 
-            4. Proposal-specific measure names or local details only if they help
-            identify a specific adopted routeing measure
+            4. Proposal-specific measure names or local details only if they help identify a specific adopted routeing measure
 
 
             You should strongly prefer:
@@ -4100,9 +3362,7 @@ workflow:
 
             11. Preserve official document numbers exactly when present.
 
-            12. Do not let local coordinates, chart numbers, place names, or highly
-            local operational details dominate the output unless they are essential
-            for identifying a specific adopted routeing measure.
+            12. Do not let local coordinates, chart numbers, place names, or highly local operational details dominate the output unless they are essential for identifying a specific adopted routeing measure.
 
             13. Do not output narrative issue statements.
 
@@ -4111,11 +3371,9 @@ workflow:
 
             - first 5 to 10 lines: exact official references and official title fragments
 
-            - next 10 to 20 lines: canonical normative terms and short family-match
-            queries
+            - next 10 to 20 lines: canonical normative terms and short family-match queries
 
-            - last 5 to 10 lines: proposal-specific bridge terms only if useful for
-            disambiguation
+            - last 5 to 10 lines: proposal-specific bridge terms only if useful for disambiguation
 
 
             Input:
@@ -4238,11 +3496,7 @@ workflow:
 
             Your only task:
 
-            Read the extracted proposal text and output pure-text English retrieval
-            keywords and short search phrases that maximize the chance of hitting
-            the governing or directly relevant IMO resolution(s), circular(s), regulation
-            text, guidance documents, and previously adopted traffic separation scheme
-            documents in the downstream knowledge base.
+            Read the extracted proposal text and output pure-text English retrieval keywords and short search phrases that maximize the chance of hitting the governing or directly relevant IMO resolution(s), circular(s), regulation text, guidance documents, and previously adopted traffic separation scheme documents in the downstream knowledge base.
 
 
             This is NOT a summary task.
@@ -4259,8 +3513,7 @@ workflow:
 
             Main objective:
 
-            Output the most retrieval-effective pure-text search anchors for a traffic
-            separation scheme proposal, amendment, adjustment, or related measure.
+            Output the most retrieval-effective pure-text search anchors for a traffic separation scheme proposal, amendment, adjustment, or related measure.
 
 
             Priority orientation:
@@ -4304,14 +3557,11 @@ workflow:
 
             1. Exact official references explicitly cited in the source text
 
-            2. Official title fragments likely to appear in IMO resolutions, circulars,
-            annex headings, and draft resolution headings
+            2. Official title fragments likely to appear in IMO resolutions, circulars, annex headings, and draft resolution headings
 
-            3. Canonical IMO normative terms used in traffic separation scheme and
-            routeing instruments
+            3. Canonical IMO normative terms used in traffic separation scheme and routeing instruments
 
-            4. Proposal-specific local scheme names or area names only if they help
-            identify a specific adopted traffic separation scheme
+            4. Proposal-specific local scheme names or area names only if they help identify a specific adopted traffic separation scheme
 
 
             You should strongly prefer:
@@ -4393,9 +3643,7 @@ workflow:
 
             11. Preserve official document numbers exactly when present.
 
-            12. Do not let local coordinates, lane names, VTS details, or narrow operational
-            wording dominate the output unless they are essential for identifying
-            a specific adopted traffic separation scheme.
+            12. Do not let local coordinates, lane names, VTS details, or narrow operational wording dominate the output unless they are essential for identifying a specific adopted traffic separation scheme.
 
             13. Do not output narrative issue statements.
 
@@ -4404,11 +3652,9 @@ workflow:
 
             - first 5 to 10 lines: exact official references and official title fragments
 
-            - next 10 to 20 lines: canonical normative terms and short family-match
-            queries
+            - next 10 to 20 lines: canonical normative terms and short family-match queries
 
-            - last 5 to 10 lines: proposal-specific bridge terms only if useful for
-            disambiguation
+            - last 5 to 10 lines: proposal-specific bridge terms only if useful for disambiguation
 
 
             Input:
@@ -4529,8 +3775,7 @@ workflow:
             ja_JP: PDFファイル
             pt_BR: Arquivos PDF
             zh_Hans: PDF文件
-          llm_description: Array of PDF files to be converted to images. Each page
-            of each PDF will be converted to a separate image.
+          llm_description: Array of PDF files to be converted to images. Each page of each PDF will be converted to a separate image.
           max: null
           min: null
           name: pdf_files
@@ -4545,19 +3790,16 @@ workflow:
           default: 72
           form: llm
           human_description:
-            en_US: Image resolution in DPI (dots per inch). Higher values produce
-              better quality but larger files.
+            en_US: Image resolution in DPI (dots per inch). Higher values produce better quality but larger files.
             ja_JP: DPI（ドット・パー・インチ）での画像解像度。高い値ほど品質が良くなりますがファイルサイズも大きくなります。
-            pt_BR: Resolução da imagem em DPI (pontos por polegada). Valores maiores
-              produzem melhor qualidade mas arquivos maiores.
+            pt_BR: Resolução da imagem em DPI (pontos por polegada). Valores maiores produzem melhor qualidade mas arquivos maiores.
             zh_Hans: 以DPI（每英寸点数）为单位的图像分辨率。数值越高质量越好但文件越大。
           label:
             en_US: Resolution (DPI)
             ja_JP: 解像度 (DPI)
             pt_BR: Resolução (DPI)
             zh_Hans: 分辨率 (DPI)
-          llm_description: 'Resolution for the output images in DPI. Default is 72.
-            Common values: 72 (web), 150 (standard), 300 (high quality).'
+          llm_description: 'Resolution for the output images in DPI. Default is 72. Common values: 72 (web), 150 (standard), 300 (high quality).'
           max: null
           min: null
           name: dpi
@@ -4572,19 +3814,16 @@ workflow:
           default: PNG
           form: form
           human_description:
-            en_US: Output image format. PNG for lossless quality, JPEG for smaller
-              file sizes.
+            en_US: Output image format. PNG for lossless quality, JPEG for smaller file sizes.
             ja_JP: 出力画像フォーマット。PNGは可逆圧縮、JPEGはファイルサイズが小さくなります。
-            pt_BR: Formato da imagem de saída. PNG para qualidade sem perda, JPEG
-              para arquivos menores.
+            pt_BR: Formato da imagem de saída. PNG para qualidade sem perda, JPEG para arquivos menores.
             zh_Hans: 输出图像格式。PNG为无损质量，JPEG文件大小更小。
           label:
             en_US: Image Format
             ja_JP: 画像フォーマット
             pt_BR: Formato de Imagem
             zh_Hans: 图像格式
-          llm_description: Output format for the converted images. PNG provides lossless
-            quality, JPEG provides smaller file sizes.
+          llm_description: Output format for the converted images. PNG provides lossless quality, JPEG provides smaller file sizes.
           max: null
           min: null
           name: image_format
