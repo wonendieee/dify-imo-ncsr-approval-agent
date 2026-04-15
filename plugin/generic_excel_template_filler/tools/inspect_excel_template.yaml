@@ -1,0 +1,148 @@
+identity:
+  author: wonendieee
+  name: inspect_excel_template
+  label:
+    en_US: Inspect Excel Template
+    zh_Hans: 检查Excel模板
+  description:
+    en_US: Inspect an Excel template and return workbook structure, named ranges, placeholders, and visible sheets.
+    zh_Hans: 检查Excel模板并返回工作簿结构、命名区域、占位符和可见工作表。
+  icon: icon.svg
+  tags:
+    - productivity
+
+description:
+  human:
+    en_US: Inspect an Excel template provided as a built-in template, URL, or base64 string.
+    zh_Hans: 检查以内置模板、URL或base64字符串提供的Excel模板。
+  llm: >
+    Inspect an Excel template and return workbook metadata useful for template filling.
+    Use this tool before filling an unfamiliar template.
+
+credential_schema: {}
+
+parameters:
+  - name: template_source_type
+    type: select
+    required: true
+    form: llm
+    default: builtin
+    options:
+      - value: builtin
+        label:
+          en_US: Built-in template
+          zh_Hans: 内置模板
+      - value: url
+        label:
+          en_US: URL
+          zh_Hans: URL
+      - value: base64
+        label:
+          en_US: Base64
+          zh_Hans: Base64
+    label:
+      en_US: Template source type
+      zh_Hans: 模板来源类型
+    human_description:
+      en_US: Choose where the Excel template comes from.
+      zh_Hans: 选择Excel模板来源。
+    llm_description: One of builtin, url, or base64.
+
+  - name: builtin_template
+    type: select
+    required: false
+    form: llm
+    default: ship_reporting_systems
+    options:
+      - value: ship_reporting_systems
+        label:
+          en_US: SHIP REPORTING SYSTEMS
+          zh_Hans: SHIP REPORTING SYSTEMS
+      - value: proposed_ship_routeing_systems
+        label:
+          en_US: PROPOSED SHIP ROUTEING SYSTEMS
+          zh_Hans: PROPOSED SHIP ROUTEING SYSTEMS
+      - value: traffic_separation_schemes_and_routeing_measures_other_than_traffic_separation_schemes
+        label:
+          en_US: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
+          zh_Hans: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
+      - value: demo_template
+        label:
+          en_US: Demo template
+          zh_Hans: 示例模板
+    label:
+      en_US: Built-in template
+      zh_Hans: 内置模板
+    human_description:
+      en_US: Select a bundled Excel template.
+      zh_Hans: 选择插件内置的Excel模板。
+    llm_description: Only used when template_source_type is builtin.
+
+  - name: template_url
+    type: string
+    required: false
+    form: llm
+    label:
+      en_US: Template URL
+      zh_Hans: 模板URL
+    human_description:
+      en_US: Publicly accessible URL to an .xlsx template.
+      zh_Hans: 可公开访问的xlsx模板URL。
+    llm_description: Used when template_source_type is url.
+
+  - name: template_base64
+    type: string
+    required: false
+    form: llm
+    label:
+      en_US: Template base64
+      zh_Hans: 模板base64
+    human_description:
+      en_US: Base64-encoded .xlsx content.
+      zh_Hans: base64编码的xlsx内容。
+    llm_description: Used when template_source_type is base64.
+
+  - name: max_non_empty_cells_per_sheet
+    type: number
+    required: false
+    form: llm
+    default: 50
+    min: 1
+    max: 500
+    label:
+      en_US: Max non-empty cells per sheet
+      zh_Hans: 每个工作表最多返回的非空单元格数
+    human_description:
+      en_US: Limit the preview of non-empty cells for readability.
+      zh_Hans: 限制非空单元格预览数量，便于阅读。
+    llm_description: Maximum preview count per sheet.
+
+output_schema:
+  type: object
+  properties:
+    workbook_summary:
+      type: object
+    sheet_names:
+      type: array
+      items:
+        type: string
+    visible_sheet_names:
+      type: array
+      items:
+        type: string
+    defined_names:
+      type: array
+      items:
+        type: object
+    placeholders:
+      type: array
+      items:
+        type: object
+    sheet_previews:
+      type: array
+      items:
+        type: object
+
+extra:
+  python:
+    source: tools/inspect_excel_template.py

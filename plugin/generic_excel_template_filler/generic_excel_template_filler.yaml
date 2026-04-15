@@ -1,0 +1,82 @@
+identity:
+  author: wonendieee
+  name: generic_excel_template_filler
+  label:
+    en_US: Generic Excel Template Filler
+    zh_Hans: 通用Excel模板填充器
+  description:
+    en_US: Inspect and fill Excel templates while preserving formatting.
+    zh_Hans: 在保留格式的前提下检查并填充Excel模板。
+  icon: icon.svg
+  tags:
+    - productivity
+
+credentials_for_provider:
+  upload_url:
+    type: text-input
+    required: false
+    label:
+      en_US: Upload URL
+      zh_Hans: 上传URL
+    placeholder:
+      en_US: http://127.0.0.1:8000/upload
+      zh_Hans: http://127.0.0.1:8000/upload
+
+  upload_token:
+    type: secret-input
+    required: false
+    label:
+      en_US: Upload Token
+      zh_Hans: 上传令牌
+
+  upload_file_field_name:
+    type: text-input
+    required: false
+    default: file
+    label:
+      en_US: Upload File Field Name
+      zh_Hans: 上传文件字段名
+
+  response_download_url_field:
+    type: text-input
+    required: false
+    default: download_url
+    label:
+      en_US: Response Download URL Field
+      zh_Hans: 响应下载链接字段
+
+  response_file_name_field:
+    type: text-input
+    required: false
+    default: file_name
+    label:
+      en_US: Response File Name Field
+      zh_Hans: 响应文件名字段
+
+  upload_headers_json:
+    type: text-input
+    required: false
+    label:
+      en_US: Upload Headers JSON
+      zh_Hans: 上传请求头JSON
+    placeholder:
+      en_US: '{"X-Workspace":"demo"}'
+      zh_Hans: '{"X-Workspace":"demo"}'
+
+  upload_form_data_json:
+    type: text-input
+    required: false
+    label:
+      en_US: Upload Form Data JSON
+      zh_Hans: 上传表单额外JSON
+    placeholder:
+      en_US: '{"bucket":"excel"}'
+      zh_Hans: '{"bucket":"excel"}'
+
+tools:
+  - tools/inspect_excel_template.yaml
+  - tools/fill_excel_template.yaml
+
+extra:
+  python:
+    source: provider/generic_excel_template_filler.py

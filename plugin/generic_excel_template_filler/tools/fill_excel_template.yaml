@@ -1,0 +1,139 @@
+identity:
+  name: fill_excel_template
+  author: wonendieee
+  label:
+    en_US: Fill Excel Template
+    zh_Hans: 填充Excel模板
+
+description:
+  human:
+    en_US: Fill an Excel template from built-in templates, URL, or base64 while preserving formatting.
+    zh_Hans: 基于内置模板、URL或base64填充Excel模板，并保留原有格式。
+  llm: Fill an Excel template using payload JSON and return either a file or a download link.
+
+parameters:
+  - name: template_source_type
+    type: select
+    required: true
+    default: builtin
+    label:
+      en_US: Template Source Type
+      zh_Hans: 模板来源类型
+    human_description:
+      en_US: Choose where the template comes from.
+      zh_Hans: 选择模板来源。
+    llm_description: Template source type.
+    form: form
+    options:
+      - value: builtin
+        label:
+          en_US: Built-in Template
+          zh_Hans: 内置模板
+      - value: url
+        label:
+          en_US: URL
+          zh_Hans: URL
+      - value: base64
+        label:
+          en_US: Base64
+          zh_Hans: Base64
+
+  - name: builtin_template
+    type: select
+    required: false
+    default: ship_reporting_systems
+    label:
+      en_US: Built-in Template
+      zh_Hans: 内置模板
+    human_description:
+      en_US: Select one built-in template when template source type is builtin.
+      zh_Hans: 当模板来源类型为内置模板时，选择一个内置模板。
+    llm_description: Built-in template name.
+    form: form
+    options:
+      - value: ship_reporting_systems
+        label:
+          en_US: SHIP REPORTING SYSTEMS
+          zh_Hans: SHIP REPORTING SYSTEMS
+      - value: proposed_ship_routeing_systems
+        label:
+          en_US: PROPOSED SHIP ROUTEING SYSTEMS
+          zh_Hans: PROPOSED SHIP ROUTEING SYSTEMS
+      - value: traffic_separation_schemes_and_routeing_measures_other_than_traffic_separation_schemes
+        label:
+          en_US: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
+          zh_Hans: TRAFFIC SEPARATION SCHEMES AND ROUTEING MEASURES OTHER THAN TRAFFIC SEPARATION SCHEMES
+
+  - name: template_url
+    type: string
+    required: false
+    label:
+      en_US: Template URL
+      zh_Hans: 模板URL
+    human_description:
+      en_US: Publicly accessible .xlsx template URL.
+      zh_Hans: 可公开访问的.xlsx模板URL。
+    llm_description: Template URL.
+    form: form
+
+  - name: template_base64
+    type: string
+    required: false
+    label:
+      en_US: Template Base64
+      zh_Hans: 模板Base64
+    human_description:
+      en_US: Base64-encoded .xlsx template content.
+      zh_Hans: base64编码的.xlsx模板内容。
+    llm_description: Base64-encoded Excel template.
+    form: form
+
+  - name: payload_json
+    type: string
+    required: true
+    label:
+      en_US: Payload JSON
+      zh_Hans: 载荷JSON
+    human_description:
+      en_US: JSON payload containing named_cells, cells, placeholders, issues, or output_filename.
+      zh_Hans: 包含named_cells、cells、placeholders、issues或output_filename的JSON数据。
+    llm_description: JSON payload used to fill the template.
+    form: llm
+
+  - name: output_filename
+    type: string
+    required: false
+    label:
+      en_US: Output Filename
+      zh_Hans: 输出文件名
+    human_description:
+      en_US: Optional output filename without extension.
+      zh_Hans: 可选输出文件名，不含扩展名。
+    llm_description: Output file name without extension.
+    form: form
+
+  - name: delivery_mode
+    type: select
+    required: true
+    default: upload_link
+    label:
+      en_US: Delivery Mode
+      zh_Hans: 交付模式
+    human_description:
+      en_US: Choose whether to return a file blob or upload and return a download link.
+      zh_Hans: 选择直接返回文件，或上传后返回下载链接。
+    llm_description: Delivery mode for the generated Excel file.
+    form: form
+    options:
+      - value: blob
+        label:
+          en_US: Direct File
+          zh_Hans: 直接文件
+      - value: upload_link
+        label:
+          en_US: Upload and Return Link
+          zh_Hans: 上传并返回链接
+
+extra:
+  python:
+    source: tools/fill_excel_template.py
