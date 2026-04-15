@@ -469,13 +469,7 @@ Possible future improvements:
 
 ## License
 
-Choose a license before publishing publicly.
-
-Recommended default:
-
 **MIT License**
-
-If you want broader reuse and easy adoption, MIT is usually the best starting point.
 
 ---
 
